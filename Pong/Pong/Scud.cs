@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +25,7 @@ namespace                       Pong
             this.screen_width = width;
             this.screen_height = height;
             this.posX = _posX;
-            this.posY = posY;
+            this.posY = _posY;
         }
 
         public override void    initialize()
@@ -38,7 +38,7 @@ namespace                       Pong
         public override void loadContent(ContentManager cm, string name)
         {
             base.loadContent(cm, name);
-            this.Position = new Vector2(this.screen_width / 2 - this.Texture.Width / 2, this.screen_height / 2 - this.Texture.Height / 2);
+            this.Position = new Vector2(posX, posY);
         }
 
         public void update(GameTime time, Rectangle p1_rect, Rectangle p2_rect)
