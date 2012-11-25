@@ -20,6 +20,10 @@ namespace Pong
         private Tank          p2;
         private SpriteFont      score_font;
         private Boolean         is_paused;
+        private double time1 = 0.00;
+        private double time2 = 0.00;
+        bool fire1 = true;
+        bool fire2 = true;
 
         public Game1()
         {
@@ -57,14 +61,13 @@ namespace Pong
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             kb_state = Keyboard.GetState();
-            this.addScuds(kb_state);
+            this.addScuds(kb_state, gameTime);
             if (!this.is_paused)
             {
                 this.p1.handleInput(kb_state, Mouse.GetState());
                 this.p1.update(gameTime);
                 this.p2.handleInput(kb_state, Mouse.GetState());
                 this.p2.update(gameTime);
-                //this.ball.update(gameTime, this.p1.CollisionRectangle, this.p2.CollisionRectangle);
                 this.checkIfBallOut();
             }
             else
@@ -80,22 +83,47 @@ namespace Pong
             foreach (Scud scud in this.listScud)
             {
                 scud.draw(spriteBatch, gameTime);
+                scud.update(gameTime, this.p1.CollisionRectangle, this.p2.CollisionRectangle);
             }
-            //this.ball.draw(spriteBatch, gameTime);
         }
 
-        private void addScuds(KeyboardState kb_state)
+        private void addScuds(KeyboardState kb_state, GameTime gameTime)
         {
-            if (kb_state.IsKeyDown(Keys.X))
+            if ((kb_state.IsKeyDown(Keys.X)) && fire1 == true)
             {
                 Scud scud;
                 scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, 50, 50);
                 scud.initialize();
                 scud.loadContent(Content, "ball");
                 listScud.Add(scud);
+                fire1 = false;
             }
-            else if (kb_state.IsKeyDown(Keys.N))
+            else if (kb_state.IsKeyDown(Keys.N) && fire2 == true)
             {
+                Scud scud;
+                scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, 50, 50);
+                scud.initialize();
+                scud.loadContent(Content, "ball");
+                listScud.Add(scud);
+                fire2 = false;
+            }
+            if (fire1 == false)
+            {
+                time1 += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (time1 >= 200)
+                {
+                    fire1 = true;
+                    time1 = 0.00;
+                }
+            }
+            if (fire2 == false)
+            {
+                time2 += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (time2 >= 200)
+                {
+                    fire2 = true;
+                    time2 = 0.00;
+                }
             }
         }
 
