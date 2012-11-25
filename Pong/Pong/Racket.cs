@@ -61,8 +61,6 @@ namespace Pong
             base.handleInput(kb_state, ms_state);
             if (this.player_number == 1)
             {
-                if (kb_state.IsKeyUp(Keys.S) || kb_state.IsKeyUp(Keys.W))
-                    this.Speed = 0f;
                 if (kb_state.IsKeyDown(Keys.S))
                 {
                     this.Direction = Vector2.UnitY;
