@@ -27,11 +27,11 @@ namespace Pong
             }
         }
 
-        private int score;
-        public int Score
+        private String name;
+        public String Name
         {
-            get { return score; }
-            set { score = value; }
+            get { return name; }
+            set { name = value; }
         }
 
 
@@ -40,12 +40,12 @@ namespace Pong
             this.screen_width = width;
             this.screen_height = height;
             this.player_number = nb;
+            this.name = "Player " + nb;
         }
 
         public override void initialize()
         {
             base.initialize();
-            this.score = 0;
         }
 
         public override void loadContent(ContentManager cm, string name)

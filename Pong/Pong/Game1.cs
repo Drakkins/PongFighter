@@ -124,14 +124,14 @@ namespace Pong
             Vector2                 p2_score_size;
             Vector2                 p2_score_pos;
 
-            p1_score_size = this.score_font.MeasureString(this.p1.Score.ToString());
-            p2_score_size = this.score_font.MeasureString(this.p2.Score.ToString());
-            p1_score_pos = new Vector2((Window.ClientBounds.Width / 4 - p1_score_size.X / 2), p1_score_size.Y);
-            p2_score_pos = new Vector2((3 * Window.ClientBounds.Width / 4 - p2_score_size.X / 2), p2_score_size.Y);
+            p1_score_size = this.score_font.MeasureString(this.p1.Name);
+            p2_score_size = this.score_font.MeasureString(this.p2.Name);
+            p1_score_pos = new Vector2(5, 5);
+            p2_score_pos = new Vector2(Window.ClientBounds.Width - 5 - p2_score_size.X, 5);
             GraphicsDevice.Clear(Color.WhiteSmoke);
             spriteBatch.Begin();
-            this.spriteBatch.DrawString(this.score_font, p1.Score.ToString(), p1_score_pos, Color.Black);
-            this.spriteBatch.DrawString(this.score_font, p2.Score.ToString(), p2_score_pos, Color.Black);
+            this.spriteBatch.DrawString(this.score_font, p1.Name, p1_score_pos, Color.Black);
+            this.spriteBatch.DrawString(this.score_font, p2.Name, p2_score_pos, Color.Black);
             this.p1.draw(spriteBatch, gameTime);
             this.p2.draw(spriteBatch, gameTime);
             this.drawScuds(gameTime);
