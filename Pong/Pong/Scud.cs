@@ -12,15 +12,20 @@ using Microsoft.Xna.Framework.Media;
 
 namespace                       Pong
 {
-    class                       Ball : Sprite
+    class                       Scud : Sprite
     {
         private int             screen_width;
         private int             screen_height;
 
-        public                  Ball(int width, int height)
+        private int posX;
+        private int posY;
+
+        public                  Scud(int width, int height, int _posX, int _posY)
         {
             this.screen_width = width;
             this.screen_height = height;
+            this.posX = _posX;
+            this.posY = posY;
         }
 
         public override void    initialize()
