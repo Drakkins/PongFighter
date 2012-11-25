@@ -15,8 +15,8 @@ namespace Pong
     {
         GraphicsDeviceManager   graphics;
         SpriteBatch             spriteBatch;
-        private Racket          p1;
-        private Racket          p2;
+        private Tank          p1;
+        private Tank          p2;
         private Ball            ball;
         private SpriteFont      score_font;
         private Boolean         is_paused;
@@ -29,8 +29,8 @@ namespace Pong
 
         protected override void Initialize()
         {
-            this.p1 = new Racket(Window.ClientBounds.Width, Window.ClientBounds.Height, 1);
-            this.p2 = new Racket(Window.ClientBounds.Width, Window.ClientBounds.Height, 2);
+            this.p1 = new Tank(Window.ClientBounds.Width, Window.ClientBounds.Height, 1);
+            this.p2 = new Tank(Window.ClientBounds.Width, Window.ClientBounds.Height, 2);
             this.ball = new Ball(Window.ClientBounds.Width, Window.ClientBounds.Height);
             this.p1.initialize();
             this.p2.initialize();
@@ -42,8 +42,8 @@ namespace Pong
         protected override void     LoadContent()
         {
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
-            this.p1.loadContent(Content, "racket");
-            this.p2.loadContent(Content, "racket");
+            this.p1.loadContent(Content, "green_tank_base");
+            this.p2.loadContent(Content, "orange_tank_base");
             this.ball.loadContent(Content, "ball");
             this.score_font = Content.Load<SpriteFont>("Impact");
         }

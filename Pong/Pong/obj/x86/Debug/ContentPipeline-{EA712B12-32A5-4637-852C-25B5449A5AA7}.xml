@@ -2,15 +2,6 @@
 <XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline">
   <Asset Type="Pipeline:BuildItemCollection">
     <Item>
-      <Source>racket.png</Source>
-      <Name>racket</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>E:\Travail\Griffith College Dublin\Game Development\PongFighter\Pong\Pong\bin\x86\Debug\Content\racket.xnb</Output>
-      <Time>2012-10-18T17:54:20.7821029+01:00</Time>
-    </Item>
-    <Item>
       <Source>ball.png</Source>
       <Name>ball</Name>
       <Importer>TextureImporter</Importer>
@@ -27,6 +18,42 @@
       <Options>None</Options>
       <Output>E:\Travail\Griffith College Dublin\Game Development\PongFighter\Pong\Pong\bin\x86\Debug\Content\impact.xnb</Output>
       <Time>2012-10-22T18:34:56.0256485+01:00</Time>
+    </Item>
+    <Item>
+      <Source>green_tank_base.png</Source>
+      <Name>green_tank_base</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>E:\Travail\Griffith College Dublin\Game Development\PongFighter\Pong\Pong\bin\x86\Debug\Content\green_tank_base.xnb</Output>
+      <Time>2012-11-25T14:52:08.4248957+00:00</Time>
+    </Item>
+    <Item>
+      <Source>orange_tank_base.png</Source>
+      <Name>orange_tank_base</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>E:\Travail\Griffith College Dublin\Game Development\PongFighter\Pong\Pong\bin\x86\Debug\Content\orange_tank_base.xnb</Output>
+      <Time>2012-11-25T14:54:12.9630189+00:00</Time>
+    </Item>
+    <Item>
+      <Source>green_tank_canon.png</Source>
+      <Name>green_tank_canon</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>E:\Travail\Griffith College Dublin\Game Development\PongFighter\Pong\Pong\bin\x86\Debug\Content\green_tank_canon.xnb</Output>
+      <Time>2012-11-25T14:56:34.3351049+00:00</Time>
+    </Item>
+    <Item>
+      <Source>orange_tank_canon.png</Source>
+      <Name>orange_tank_canon</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>E:\Travail\Griffith College Dublin\Game Development\PongFighter\Pong\Pong\bin\x86\Debug\Content\orange_tank_canon.xnb</Output>
+      <Time>2012-11-25T15:05:09.3115599+00:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
