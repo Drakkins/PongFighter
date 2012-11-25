@@ -1,0 +1,9 @@
+C:\Users\Drakkin\Documents\My Projects\popwings\Soft perso\XNAGames\Pong\Pong\bin\x86\Debug\Content\racket.xnb
+C:\Users\Drakkin\Documents\My Projects\popwings\Soft perso\XNAGames\Pong\Pong\bin\x86\Debug\Content\ball.xnb
+C:\Users\Drakkin\Documents\My Projects\popwings\Soft perso\XNAGames\Pong\Pong\bin\x86\Debug\Pong.exe
+C:\Users\Drakkin\Documents\My Projects\popwings\Soft perso\XNAGames\Pong\Pong\bin\x86\Debug\Pong.pdb
+C:\Users\Drakkin\Documents\My Projects\popwings\Soft perso\XNAGames\Pong\Pong\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Drakkin\Documents\My Projects\popwings\Soft perso\XNAGames\Pong\Pong\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Drakkin\Documents\My Projects\popwings\Soft perso\XNAGames\Pong\Pong\obj\x86\Debug\Pong.exe
+C:\Users\Drakkin\Documents\My Projects\popwings\Soft perso\XNAGames\Pong\Pong\obj\x86\Debug\Pong.pdb
+C:\Users\Drakkin\Documents\My Projects\popwings\Soft perso\XNAGames\Pong\Pong\bin\x86\Debug\Content\impact.xnb
