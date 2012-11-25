@@ -92,7 +92,7 @@ namespace Pong
             if ((kb_state.IsKeyDown(Keys.X)) && fire1 == true)
             {
                 Scud scud;
-                scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, 50, 50);
+                scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p1.Position.X, p1.Position.Y, 0);
                 scud.initialize();
                 scud.loadContent(Content, "ball");
                 listScud.Add(scud);
@@ -101,7 +101,7 @@ namespace Pong
             else if (kb_state.IsKeyDown(Keys.N) && fire2 == true)
             {
                 Scud scud;
-                scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, 50, 50);
+                scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p2.Position.X, p2.Position.Y, 1);
                 scud.initialize();
                 scud.loadContent(Content, "ball");
                 listScud.Add(scud);

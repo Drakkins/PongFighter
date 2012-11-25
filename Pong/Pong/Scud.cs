@@ -16,22 +16,27 @@ namespace                       Pong
     {
         private int             screen_width;
         private int             screen_height;
+        private int player;
 
-        private int posX;
-        private int posY;
+        private float posX;
+        private float posY;
 
-        public                  Scud(int width, int height, int _posX, int _posY)
+        public                  Scud(int width, int height, float _posX, float _posY, int _player)
         {
             this.screen_width = width;
             this.screen_height = height;
             this.posX = _posX;
             this.posY = _posY;
+            player = _player;
         }
 
         public override void    initialize()
         {
             base.initialize();
-            this.Direction = new Vector2(1, 1);
+            if (this.player == 0)
+                this.Direction = new Vector2(1, 0);
+            else if (this.player == 1)
+                this.Direction = new Vector2(-1, 0);
             this.Speed = 0.2f;
         }
 
