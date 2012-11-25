@@ -91,21 +91,21 @@ namespace Pong
         {
             if (this.is_paused == false)
             {
-                if ((kb_state.IsKeyDown(Keys.X)) && fire1 == true)
+                if ((kb_state.IsKeyDown(Keys.Space)) && fire1 == true)
                 {
                     Scud scud;
-                    scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p1.Position.X + 50, p1.Position.Y + 20, 0);
+                    scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p1.Position.X + 50, p1.Position.Y + 26, 0);
                     scud.initialize();
-                    scud.loadContent(Content, "ball");
+                    scud.loadContent(Content, "bullet");
                     listScud.Add(scud);
                     fire1 = false;
                 }
-                else if (kb_state.IsKeyDown(Keys.N) && fire2 == true)
+                else if (kb_state.IsKeyDown(Keys.Enter) && fire2 == true)
                 {
                     Scud scud;
-                    scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p2.Position.X - 25, p2.Position.Y + 20, 1);
+                    scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p2.Position.X - 25, p2.Position.Y + 26, 1);
                     scud.initialize();
-                    scud.loadContent(Content, "ball");
+                    scud.loadContent(Content, "bullet");
                     listScud.Add(scud);
                     fire2 = false;
                 }
