@@ -89,40 +89,43 @@ namespace Pong
 
         private void addScuds(KeyboardState kb_state, GameTime gameTime)
         {
-            if ((kb_state.IsKeyDown(Keys.X)) && fire1 == true)
+            if (this.is_paused == false)
             {
-                Scud scud;
-                scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p1.Position.X, p1.Position.Y, 0);
-                scud.initialize();
-                scud.loadContent(Content, "ball");
-                listScud.Add(scud);
-                fire1 = false;
-            }
-            else if (kb_state.IsKeyDown(Keys.N) && fire2 == true)
-            {
-                Scud scud;
-                scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p2.Position.X, p2.Position.Y, 1);
-                scud.initialize();
-                scud.loadContent(Content, "ball");
-                listScud.Add(scud);
-                fire2 = false;
-            }
-            if (fire1 == false)
-            {
-                time1 += gameTime.ElapsedGameTime.TotalMilliseconds;
-                if (time1 >= 200)
+                if ((kb_state.IsKeyDown(Keys.X)) && fire1 == true)
                 {
-                    fire1 = true;
-                    time1 = 0.00;
+                    Scud scud;
+                    scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p1.Position.X + 50, p1.Position.Y + 20, 0);
+                    scud.initialize();
+                    scud.loadContent(Content, "ball");
+                    listScud.Add(scud);
+                    fire1 = false;
                 }
-            }
-            if (fire2 == false)
-            {
-                time2 += gameTime.ElapsedGameTime.TotalMilliseconds;
-                if (time2 >= 200)
+                else if (kb_state.IsKeyDown(Keys.N) && fire2 == true)
                 {
-                    fire2 = true;
-                    time2 = 0.00;
+                    Scud scud;
+                    scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p2.Position.X - 25, p2.Position.Y + 20, 1);
+                    scud.initialize();
+                    scud.loadContent(Content, "ball");
+                    listScud.Add(scud);
+                    fire2 = false;
+                }
+                if (fire1 == false)
+                {
+                    time1 += gameTime.ElapsedGameTime.TotalMilliseconds;
+                    if (time1 >= 200)
+                    {
+                        fire1 = true;
+                        time1 = 0.00;
+                    }
+                }
+                if (fire2 == false)
+                {
+                    time2 += gameTime.ElapsedGameTime.TotalMilliseconds;
+                    if (time2 >= 200)
+                    {
+                        fire2 = true;
+                        time2 = 0.00;
+                    }
                 }
             }
         }
