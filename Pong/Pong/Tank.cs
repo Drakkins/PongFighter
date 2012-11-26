@@ -18,6 +18,8 @@ namespace Pong
         private int         screen_height;
         private int         player_number;
         private Texture2D   texture_canon;
+        private float       rotation;
+        private Vector2     origin;
 
         public Rectangle CollisionRectangle
         {
@@ -41,6 +43,7 @@ namespace Pong
             this.screen_height = height;
             this.player_number = nb;
             this.name = "Player " + nb;
+            this.rotation = 0;
         }
 
         public override void initialize()
@@ -55,12 +58,16 @@ namespace Pong
             {
                 this.Position = new Vector2(10, this.screen_height / 2 - this.Texture.Height / 2);
                 this.texture_canon = cm.Load<Texture2D>("green_tank_canon");
+                origin.X = this.texture_canon.Width / 2 - 10;
             }
             else
             {
                 this.Position = new Vector2(this.screen_width - this.Texture.Width - 10, this.screen_height / 2 - this.Texture.Height / 2);
                 this.texture_canon = cm.Load<Texture2D>("orange_tank_canon");
+                origin.X = this.texture_canon.Width / 2 + 10;
             }
+
+            origin.Y = this.texture_canon.Height / 2;
         }
 
         public override void handleInput(KeyboardState kb_state, MouseState ms_state)
@@ -82,6 +89,10 @@ namespace Pong
                 }
                 else
                     this.Speed = 0f;
+                if (kb_state.IsKeyDown(Keys.D) && this.rotation < 1f)
+                    this.rotation += 0.2f;
+                else if (kb_state.IsKeyDown(Keys.A) && this.rotation > -1f)
+                    this.rotation -= 0.2f;
             }
             else
             {
@@ -97,6 +108,10 @@ namespace Pong
                 }
                 else
                     this.Speed = 0f;
+                if (kb_state.IsKeyDown(Keys.Right) && this.rotation < 1f)
+                    this.rotation += 0.2f;
+                else if (kb_state.IsKeyDown(Keys.Left) && this.rotation > -1f)
+                    this.rotation -= 0.2f;
             }
         }
 
@@ -113,10 +128,11 @@ namespace Pong
 
             base.draw(sprite_batch, time);
             if (this.player_number == 1)
-                position_canon = new Vector2(Position.X + 8, Position.Y + 17);
+                position_canon = new Vector2(Position.X + 20, Position.Y + 30);
             else
-                position_canon = new Vector2(Position.X - 10, Position.Y + 17);
-            sprite_batch.Draw(this.texture_canon, position_canon, Color.White);
+                position_canon = new Vector2(Position.X + 23, Position.Y + 30);
+            //sprite_batch.Draw(this.texture_canon, position_canon, Color.White);
+            sprite_batch.Draw(this.texture_canon, position_canon, null, Color.White, this.rotation, this.origin, 1.0f, SpriteEffects.None, 0f);
         }
     }
 }

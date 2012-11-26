@@ -105,7 +105,7 @@ namespace Pong
                     Scud scud;
                     scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p2.Position.X - 25, p2.Position.Y + 26, 1);
                     scud.initialize();
-                    scud.loadContent(Content, "bullet");
+                    scud.loadContent(Content, "bullet_orange");
                     listScud.Add(scud);
                     fire2 = false;
                 }
