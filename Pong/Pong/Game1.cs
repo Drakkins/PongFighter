@@ -36,6 +36,8 @@ namespace Pong
         private int p2PosX = 0;
         private int p2PosY = 0;
 
+        System.Media.SoundPlayer soundExplosion;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -52,6 +54,8 @@ namespace Pong
             this.is_paused = true;
             explosionSpriteP1 = Content.Load<Texture2D>("explosion");
             explosionSpriteP2 = Content.Load<Texture2D>("explosion");
+            soundExplosion = new System.Media.SoundPlayer();
+            soundExplosion.SoundLocation = "C:/Users/Ekhoo/Desktop/Gaming/PongFighter/Pong/PongContent/soundExplosion.wav";
             base.Initialize();
         }
 
@@ -103,11 +107,13 @@ namespace Pong
                 {
                     explosionP1 = true;
                     listScud.Remove(listScud[i]);
+                    soundExplosion.Play();
                 }
                 else if ((listScud[i].Direction.X > 0 && this.p2.CollisionRectangle.Contains((int)listScud[i].Position.X + listScud[i].Texture.Width, (int)listScud[i].Position.Y + listScud[i].Texture.Height / 2)))
                 {
                     explosionP2 = true;
                     listScud.Remove(listScud[i]);
+                    soundExplosion.Play();
                 }
                 i++;
             }
@@ -206,7 +212,7 @@ namespace Pong
         {
             if (explosionP1 == true)
             {
-                sspriteBatch.Draw(explosionSpriteP1, new Rectangle((int)p1.Position.X - 35, (int)p1.Position.Y - 25, 96, 96), new Rectangle(p1PosX, p1PosY, 96, 96), Color.White);
+                spriteBatch.Draw(explosionSpriteP1, new Rectangle((int)p1.Position.X - 35, (int)p1.Position.Y - 25, 96, 96), new Rectangle(p1PosX, p1PosY, 96, 96), Color.White);
             }
             if (explosionP2 == true)
             {
