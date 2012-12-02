@@ -25,6 +25,17 @@ namespace Pong
         bool fire1 = true;
         bool fire2 = true;
 
+        bool explosionP1 = false;
+        bool explosionP2 = false;
+        private Texture2D explosionSpriteP1;
+        private Texture2D explosionSpriteP2;
+        private double elapsedTimeP1 = 0.0;
+        private double elapsedTimeP2 = 0.0;
+        private int p1PosX = 0;
+        private int p1PosY = 0;
+        private int p2PosX = 0;
+        private int p2PosY = 0;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -39,6 +50,8 @@ namespace Pong
             this.p1.initialize();
             this.p2.initialize();
             this.is_paused = true;
+            explosionSpriteP1 = Content.Load<Texture2D>("explosion");
+            explosionSpriteP2 = Content.Load<Texture2D>("explosion");
             base.Initialize();
         }
 
@@ -60,6 +73,7 @@ namespace Pong
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
+            this.updateExplosion(gameTime);
             kb_state = Keyboard.GetState();
             this.addScuds(kb_state, gameTime);
             if (!this.is_paused)
@@ -80,10 +94,22 @@ namespace Pong
 
         private void drawScuds(GameTime gameTime)
         {
-            foreach (Scud scud in this.listScud)
+            int i = 0;
+            while (i < listScud.Count)
             {
-                scud.draw(spriteBatch, gameTime);
-                scud.update(gameTime, this.p1.CollisionRectangle, this.p2.CollisionRectangle);
+                listScud[i].draw(spriteBatch, gameTime);
+                listScud[i].update(gameTime, this.p1.CollisionRectangle, this.p2.CollisionRectangle);
+                if ((listScud[i].Direction.X < 0 && this.p1.CollisionRectangle.Contains((int)listScud[i].Position.X, (int)listScud[i].Position.Y + listScud[i].Texture.Height / 2)))
+                {
+                    explosionP1 = true;
+                    listScud.Remove(listScud[i]);
+                }
+                else if ((listScud[i].Direction.X > 0 && this.p2.CollisionRectangle.Contains((int)listScud[i].Position.X + listScud[i].Texture.Width, (int)listScud[i].Position.Y + listScud[i].Texture.Height / 2)))
+                {
+                    explosionP2 = true;
+                    listScud.Remove(listScud[i]);
+                }
+                i++;
             }
         }
 
@@ -130,6 +156,64 @@ namespace Pong
             }
         }
 
+        private void updateExplosion(GameTime gameTime)
+        {
+            if (explosionP1 == true)
+            {
+                elapsedTimeP1 += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (elapsedTimeP1 >= 100)
+                {
+                    p1PosX += 107;
+
+                    if (p1PosX == 642)
+                    {
+                        p1PosX = 0;
+                        p1PosY += 82;
+                    }
+                    if (p1PosY == 164)
+                    {
+                        p1PosX = 0;
+                        p1PosY = 0;
+                        explosionP1 = false;
+                    }
+                    elapsedTimeP1 = 0.0;
+                }
+            }
+            if (explosionP2 == true)
+            {
+                elapsedTimeP2 += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (elapsedTimeP2 >= 100)
+                {
+                    p2PosX += 107;
+
+                    if (p2PosX == 642)
+                    {
+                        p2PosX = 0;
+                        p2PosY += 82;
+                    }
+                    if (p2PosY == 164)
+                    {
+                        p2PosX = 0;
+                        p2PosY = 0;
+                        explosionP2 = false;
+                    }
+                    elapsedTimeP2 = 0.0;
+                }
+            }
+        }
+
+        private void drawExplosion(GameTime gameTime)
+        {
+            if (explosionP1 == true)
+            {
+                sspriteBatch.Draw(explosionSpriteP1, new Rectangle((int)p1.Position.X - 35, (int)p1.Position.Y - 25, 96, 96), new Rectangle(p1PosX, p1PosY, 96, 96), Color.White);
+            }
+            if (explosionP2 == true)
+            {
+                spriteBatch.Draw(explosionSpriteP2, new Rectangle((int)p2.Position.X - 35, (int)p2.Position.Y - 25, 96, 96), new Rectangle(p2PosX, p2PosY, 96, 96), Color.White);
+            }
+        }
+
         private void                checkIfBallOut()
         {
             /*if (this.ball.Position.X <= 0)
@@ -166,6 +250,7 @@ namespace Pong
             this.p1.draw(spriteBatch, gameTime);
             this.p2.draw(spriteBatch, gameTime);
             this.drawScuds(gameTime);
+            this.drawExplosion(gameTime);
             spriteBatch.End();
             base.Draw(gameTime);
         }
