@@ -18,6 +18,7 @@ namespace Pong
         private List<Scud>      listScud;
         private List<Texture2D> listLifeP1;
         private List<Texture2D> listLifeP2;
+        private Texture2D       ui;
         private Tank            p1;
         private Tank            p2;
         private SpriteFont      score_font;
@@ -38,7 +39,7 @@ namespace Pong
         private int p2PosX = 0;
         private int p2PosY = 0;
 
-        System.Media.SoundPlayer soundExplosion;
+        SoundEffect exp;
 
         public Game1()
         {
@@ -50,10 +51,10 @@ namespace Pong
         {
             int i = 0;
 
-            while (i < 5)
+            while (i < 7)
             {
-                listLifeP1.Add(Content.Load<Texture2D>("life"));
-                listLifeP2.Add(Content.Load<Texture2D>("life"));
+                listLifeP1.Add(Content.Load<Texture2D>("lifebar"));
+                listLifeP2.Add(Content.Load<Texture2D>("lifebar2"));
                 i++;
             }
         }
@@ -70,8 +71,9 @@ namespace Pong
             this.is_paused = true;
             explosionSpriteP1 = Content.Load<Texture2D>("explosion");
             explosionSpriteP2 = Content.Load<Texture2D>("explosion");
-            soundExplosion = new System.Media.SoundPlayer();
-            soundExplosion.SoundLocation = "C:/Users/Ekhoo/Desktop/Gaming/PongFighter/Pong/PongContent/soundExplosion.wav";
+            
+            exp = Content.Load<SoundEffect>("soundExplosion");
+
 
             SoundEffect bgEffect;
             bgEffect = Content.Load<SoundEffect>("soundGame");
@@ -90,6 +92,7 @@ namespace Pong
             this.p1.loadContent(Content, "green_tank_base");
             this.p2.loadContent(Content, "orange_tank_base");
             this.score_font = Content.Load<SpriteFont>("Impact");
+            this.ui = Content.Load<Texture2D>("ui_repeat");
         }
 
         protected override void     UnloadContent()
@@ -132,7 +135,7 @@ namespace Pong
                 {
                     explosionP1 = true;
                     listScud.Remove(listScud[i]);
-                    soundExplosion.Play();
+                    exp.Play();
                     if (listLifeP1.Count >= 1)
                         listLifeP1.RemoveAt(listLifeP1.Count - 1);
                 }
@@ -140,7 +143,7 @@ namespace Pong
                 {
                     explosionP2 = true;
                     listScud.Remove(listScud[i]);
-                    soundExplosion.Play();
+                    exp.Play();
                     if (listLifeP2.Count >= 1)
                         listLifeP2.RemoveAt(listLifeP2.Count - 1);
                 }
@@ -267,26 +270,37 @@ namespace Pong
             }*/
         }
 
-        public void drawLife()
+        private void        drawUI()
+        {
+            int             x = 0;
+
+            while (x < Window.ClientBounds.Width)
+            {
+                spriteBatch.Draw(this.ui, new Vector2(x, 0), Color.White);
+                x++;
+            }
+        }
+
+        public void         drawLife()
         {
             int i = 0;
-            int x1 = 10;
-            int y1 = 50;
-            int x2 = 740;
-            int y2 = 50;
+            int x1 = 110;
+            int y1 = 10;
+            int x2 = 640;
+            int y2 = 10;
 
             while (i < listLifeP1.Count)
             {
                 spriteBatch.Draw(listLifeP1[i], new Vector2(x1, y1), Color.White);
                 i++;
-                x1 += 50;
+                x1 += 30;
             }
             i = 0;
             while (i < listLifeP2.Count)
             {
                 spriteBatch.Draw(listLifeP2[i], new Vector2(x2, y2), Color.White);
                 i++;
-                x2 -= 50;
+                x2 -= 30;
             }
         }
 
@@ -303,13 +317,15 @@ namespace Pong
             p2_score_pos = new Vector2(Window.ClientBounds.Width - 5 - p2_score_size.X, 5);
             GraphicsDevice.Clear(Color.WhiteSmoke);
             spriteBatch.Begin();
-            this.spriteBatch.DrawString(this.score_font, p1.Name, p1_score_pos, Color.Black);
-            this.spriteBatch.DrawString(this.score_font, p2.Name, p2_score_pos, Color.Black);
+            
             this.p1.draw(spriteBatch, gameTime);
             this.p2.draw(spriteBatch, gameTime);
             this.drawScuds(gameTime);
             this.drawExplosion(gameTime);
+            this.drawUI();
             drawLife();
+            this.spriteBatch.DrawString(this.score_font, p1.Name, p1_score_pos, Color.White);
+            this.spriteBatch.DrawString(this.score_font, p2.Name, p2_score_pos, Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
         }

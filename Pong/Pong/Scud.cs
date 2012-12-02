@@ -20,6 +20,7 @@ namespace                       Pong
         public float rotation;
         private float posX;
         private float posY;
+        private int             y_min = 50;
 
         public                  Scud(int width, int height, float _posX, float _posY, int _player, float rotation)
         {
@@ -51,7 +52,7 @@ namespace                       Pong
 
         public void update(GameTime time, Rectangle p1_rect, Rectangle p2_rect)
         {
-            if ((Position.Y <= 0 && Direction.Y < 0) || (Position.Y > this.screen_height - this.Texture.Height && Direction.Y > 0))
+            if ((Position.Y <= y_min && Direction.Y < 0) || (Position.Y > this.screen_height - this.Texture.Height && Direction.Y > 0))
             {
                 Direction = new Vector2(Direction.X, -Direction.Y);
                 Speed += 0.05f;

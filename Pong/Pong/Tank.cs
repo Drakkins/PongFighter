@@ -18,8 +18,9 @@ namespace Pong
         private int         screen_height;
         private int         player_number;
         private Texture2D   texture_canon;
-        public float       rotation;
+        public float        rotation;
         private Vector2     origin;
+        private int         y_min = 50;
 
         public Rectangle CollisionRectangle
         {
@@ -117,7 +118,7 @@ namespace Pong
 
         public override void    update(GameTime time)
         {
-            if ((this.Position.Y <= 0 && this.Direction .Y < 0) || (this.Position.Y >= this.screen_height - this.Texture.Height && this.Direction.Y > 0))
+            if ((this.Position.Y <= this.y_min && this.Direction .Y < 0) || (this.Position.Y >= this.screen_height - this.Texture.Height && this.Direction.Y > 0))
                 this.Speed = 0;
             base.update(time);
         }
@@ -131,7 +132,6 @@ namespace Pong
                 position_canon = new Vector2(Position.X + 20, Position.Y + 30);
             else
                 position_canon = new Vector2(Position.X + 23, Position.Y + 30);
-            //sprite_batch.Draw(this.texture_canon, position_canon, Color.White);
             sprite_batch.Draw(this.texture_canon, position_canon, null, Color.White, this.rotation, this.origin, 1.0f, SpriteEffects.None, 0f);
         }
     }
