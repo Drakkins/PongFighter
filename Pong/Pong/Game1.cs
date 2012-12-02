@@ -16,8 +16,10 @@ namespace Pong
         GraphicsDeviceManager   graphics;
         SpriteBatch             spriteBatch;
         private List<Scud>      listScud;
-        private Tank          p1;
-        private Tank          p2;
+        private List<Texture2D> listLifeP1;
+        private List<Texture2D> listLifeP2;
+        private Tank            p1;
+        private Tank            p2;
         private SpriteFont      score_font;
         private Boolean         is_paused;
         private double time1 = 0.00;
@@ -44,9 +46,23 @@ namespace Pong
             Content.RootDirectory = "Content";
         }
 
+        public void initLife()
+        {
+            int i = 0;
+
+            while (i < 5)
+            {
+                listLifeP1.Add(Content.Load<Texture2D>("life"));
+                listLifeP2.Add(Content.Load<Texture2D>("life"));
+                i++;
+            }
+        }
+
         protected override void Initialize()
         {
             listScud = new List<Scud>();
+            listLifeP1 = new List<Texture2D>();
+            listLifeP2 = new List<Texture2D>();
             this.p1 = new Tank(Window.ClientBounds.Width, Window.ClientBounds.Height, 1);
             this.p2 = new Tank(Window.ClientBounds.Width, Window.ClientBounds.Height, 2);
             this.p1.initialize();
@@ -56,6 +72,15 @@ namespace Pong
             explosionSpriteP2 = Content.Load<Texture2D>("explosion");
             soundExplosion = new System.Media.SoundPlayer();
             soundExplosion.SoundLocation = "C:/Users/Ekhoo/Desktop/Gaming/PongFighter/Pong/PongContent/soundExplosion.wav";
+
+            SoundEffect bgEffect;
+            bgEffect = Content.Load<SoundEffect>("soundGame");
+            SoundEffectInstance instance = bgEffect.CreateInstance();
+            instance.IsLooped = true;
+            bgEffect.Play(1f, 0.0f, 0.0f);
+
+            initLife();
+
             base.Initialize();
         }
 
@@ -108,12 +133,16 @@ namespace Pong
                     explosionP1 = true;
                     listScud.Remove(listScud[i]);
                     soundExplosion.Play();
+                    if (listLifeP1.Count >= 1)
+                        listLifeP1.RemoveAt(listLifeP1.Count - 1);
                 }
                 else if ((listScud[i].Direction.X > 0 && this.p2.CollisionRectangle.Contains((int)listScud[i].Position.X + listScud[i].Texture.Width, (int)listScud[i].Position.Y + listScud[i].Texture.Height / 2)))
                 {
                     explosionP2 = true;
                     listScud.Remove(listScud[i]);
                     soundExplosion.Play();
+                    if (listLifeP2.Count >= 1)
+                        listLifeP2.RemoveAt(listLifeP2.Count - 1);
                 }
                 i++;
             }
@@ -238,6 +267,29 @@ namespace Pong
             }*/
         }
 
+        public void drawLife()
+        {
+            int i = 0;
+            int x1 = 10;
+            int y1 = 50;
+            int x2 = 740;
+            int y2 = 50;
+
+            while (i < listLifeP1.Count)
+            {
+                spriteBatch.Draw(listLifeP1[i], new Vector2(x1, y1), Color.White);
+                i++;
+                x1 += 50;
+            }
+            i = 0;
+            while (i < listLifeP2.Count)
+            {
+                spriteBatch.Draw(listLifeP2[i], new Vector2(x2, y2), Color.White);
+                i++;
+                x2 -= 50;
+            }
+        }
+
         protected override void     Draw(GameTime gameTime)
         {
             Vector2                 p1_score_size;
@@ -257,6 +309,7 @@ namespace Pong
             this.p2.draw(spriteBatch, gameTime);
             this.drawScuds(gameTime);
             this.drawExplosion(gameTime);
+            drawLife();
             spriteBatch.End();
             base.Draw(gameTime);
         }
