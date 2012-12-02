@@ -94,7 +94,7 @@ namespace Pong
                 if ((kb_state.IsKeyDown(Keys.Space)) && fire1 == true)
                 {
                     Scud scud;
-                    scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p1.Position.X + 50, p1.Position.Y + 26, 0);
+                    scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p1.Position.X + 50, p1.Position.Y + 26, 0, p1.rotation);
                     scud.initialize();
                     scud.loadContent(Content, "bullet");
                     listScud.Add(scud);
@@ -103,7 +103,7 @@ namespace Pong
                 else if (kb_state.IsKeyDown(Keys.Enter) && fire2 == true)
                 {
                     Scud scud;
-                    scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p2.Position.X - 25, p2.Position.Y + 26, 1);
+                    scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p2.Position.X - 25, p2.Position.Y + 26, 1, p2.rotation);
                     scud.initialize();
                     scud.loadContent(Content, "bullet_orange");
                     listScud.Add(scud);

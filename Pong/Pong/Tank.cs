@@ -18,7 +18,7 @@ namespace Pong
         private int         screen_height;
         private int         player_number;
         private Texture2D   texture_canon;
-        private float       rotation;
+        public float       rotation;
         private Vector2     origin;
 
         public Rectangle CollisionRectangle
@@ -90,9 +90,9 @@ namespace Pong
                 else
                     this.Speed = 0f;
                 if (kb_state.IsKeyDown(Keys.D) && this.rotation < 1f)
-                    this.rotation += 0.2f;
+                    this.rotation += 0.1f;
                 else if (kb_state.IsKeyDown(Keys.A) && this.rotation > -1f)
-                    this.rotation -= 0.2f;
+                    this.rotation -= 0.1f;
             }
             else
             {
@@ -109,9 +109,9 @@ namespace Pong
                 else
                     this.Speed = 0f;
                 if (kb_state.IsKeyDown(Keys.Right) && this.rotation < 1f)
-                    this.rotation += 0.2f;
+                    this.rotation += 0.1f;
                 else if (kb_state.IsKeyDown(Keys.Left) && this.rotation > -1f)
-                    this.rotation -= 0.2f;
+                    this.rotation -= 0.1f;
             }
         }
 

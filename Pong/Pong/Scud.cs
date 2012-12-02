@@ -17,17 +17,18 @@ namespace                       Pong
         private int             screen_width;
         private int             screen_height;
         private int player;
-
+        private float rotation;
         private float posX;
         private float posY;
 
-        public                  Scud(int width, int height, float _posX, float _posY, int _player)
+        public                  Scud(int width, int height, float _posX, float _posY, int _player, float rotation)
         {
             this.screen_width = width;
             this.screen_height = height;
             this.posX = _posX;
             this.posY = _posY;
             player = _player;
+            this.rotation = rotation;
         }
 
         public override void    initialize()
@@ -37,6 +38,8 @@ namespace                       Pong
                 this.Direction = new Vector2(1, 0);
             else if (this.player == 1)
                 this.Direction = new Vector2(-1, 0);
+            Matrix rotMatrix = Matrix.CreateRotationZ(this.rotation);
+            Direction = Vector2.Transform(Direction, rotMatrix);
             this.Speed = 0.2f;
         }
 
@@ -49,13 +52,23 @@ namespace                       Pong
         public void update(GameTime time, Rectangle p1_rect, Rectangle p2_rect)
         {
             if ((Position.Y <= 0 && Direction.Y < 0) || (Position.Y > this.screen_height - this.Texture.Height && Direction.Y > 0))
+            {
                 Direction = new Vector2(Direction.X, -Direction.Y);
+                Speed += 0.05f;
+                this.rotation = -this.rotation;
+            }
             if ((Direction.X < 0 && p1_rect.Contains((int)Position.X, (int)Position.Y + Texture.Height / 2)) || (Direction.X > 0 && p2_rect.Contains((int)Position.X + Texture.Width, (int)Position.Y + Texture.Height / 2)))
             {
                 Direction = new Vector2(-Direction.X, Direction.Y);
+                this.rotation = -this.rotation;
                 Speed += 0.05f;
             }
             base.update(time);
+        }
+
+        public override void draw(SpriteBatch sprite_batch, GameTime time)
+        {
+            sprite_batch.Draw(Texture, Position, null, Color.White, this.rotation, new Vector2(Texture.Width / 2, Texture.Height / 2), 1.0f, SpriteEffects.None, 0f);
         }
     }
 }
