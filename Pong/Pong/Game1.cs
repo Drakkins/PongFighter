@@ -91,7 +91,7 @@ namespace Pong
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
             this.p1.loadContent(Content, "green_tank_base");
             this.p2.loadContent(Content, "orange_tank_base");
-            this.score_font = Content.Load<SpriteFont>("Impact");
+            this.score_font = Content.Load<SpriteFont>("SquaredDisplay");
             this.ui = Content.Load<Texture2D>("ui_repeat");
         }
 
@@ -284,10 +284,10 @@ namespace Pong
         public void         drawLife()
         {
             int i = 0;
-            int x1 = 110;
-            int y1 = 10;
-            int x2 = 640;
-            int y2 = 10;
+            int x1 = 140;
+            int y1 = 8;
+            int x2 = 610;
+            int y2 = 8;
 
             while (i < listLifeP1.Count)
             {
@@ -310,11 +310,12 @@ namespace Pong
             Vector2                 p1_score_pos;
             Vector2                 p2_score_size;
             Vector2                 p2_score_pos;
+            int                     y_score = 8;
 
             p1_score_size = this.score_font.MeasureString(this.p1.Name);
             p2_score_size = this.score_font.MeasureString(this.p2.Name);
-            p1_score_pos = new Vector2(5, 5);
-            p2_score_pos = new Vector2(Window.ClientBounds.Width - 5 - p2_score_size.X, 5);
+            p1_score_pos = new Vector2(5, y_score);
+            p2_score_pos = new Vector2(Window.ClientBounds.Width - 5 - p2_score_size.X, y_score);
             GraphicsDevice.Clear(Color.WhiteSmoke);
             spriteBatch.Begin();
             
