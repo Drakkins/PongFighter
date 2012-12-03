@@ -76,24 +76,25 @@ namespace Pong
             base.handleInput(kb_state, ms_state);
             if (this.player_number == 1)
             {
-                if (kb_state.IsKeyUp(Keys.S) || kb_state.IsKeyUp(Keys.W))
-                    this.Speed = 0f;
-                if (kb_state.IsKeyDown(Keys.S))
+                if (!xboxController())
                 {
-                    this.Direction = Vector2.UnitY;
-                    this.Speed = 0.3f;
+                    if (kb_state.IsKeyUp(Keys.S) || kb_state.IsKeyUp(Keys.W))
+                        this.Speed = 0f;
+                    if (kb_state.IsKeyDown(Keys.S))
+                    {
+                        this.Direction = Vector2.UnitY;
+                        this.Speed = 0.3f;
+                    }
+                    else if (kb_state.IsKeyDown(Keys.W))
+                    {
+                        this.Direction = -Vector2.UnitY;
+                        this.Speed = 0.3f;
+                    }
+                    if (kb_state.IsKeyDown(Keys.D) && this.rotation < 1f)
+                        this.rotation += 0.1f;
+                    else if (kb_state.IsKeyDown(Keys.A) && this.rotation > -1f)
+                        this.rotation -= 0.1f;
                 }
-                else if (kb_state.IsKeyDown(Keys.W))
-                {
-                    this.Direction = -Vector2.UnitY;
-                    this.Speed = 0.3f;
-                }
-                else
-                    this.Speed = 0f;
-                if (kb_state.IsKeyDown(Keys.D) && this.rotation < 1f)
-                    this.rotation += 0.1f;
-                else if (kb_state.IsKeyDown(Keys.A) && this.rotation > -1f)
-                    this.rotation -= 0.1f;
             }
             else
             {
@@ -114,6 +115,34 @@ namespace Pong
                 else if (kb_state.IsKeyDown(Keys.Left) && this.rotation > -1f)
                     this.rotation -= 0.1f;
             }
+        }
+
+        private Boolean         xboxController()
+        {
+            GamePadState        game_pad_state;
+
+            game_pad_state = GamePad.GetState(PlayerIndex.One);
+            if (game_pad_state.IsConnected)
+            {
+                if (game_pad_state.IsButtonUp(Buttons.LeftThumbstickUp) || game_pad_state.IsButtonUp(Buttons.LeftThumbstickDown))
+                    this.Speed = 0f;
+                if (game_pad_state.IsButtonDown(Buttons.LeftThumbstickUp))
+                {
+                    this.Direction = -Vector2.UnitY;
+                    this.Speed = 0.3f;
+                }
+                else if (game_pad_state.IsButtonDown(Buttons.LeftThumbstickDown))
+                {
+                    this.Direction = Vector2.UnitY;
+                    this.Speed = 0.3f;
+                }
+                if (game_pad_state.ThumbSticks.Right.X > 0 && game_pad_state.ThumbSticks.Right.Y >= 0 && this.rotation > -1f)
+                    this.rotation -= 0.1f;
+                else if (game_pad_state.ThumbSticks.Right.X > 0 && game_pad_state.ThumbSticks.Right.Y <= 0 &&  this.rotation < 1f)
+                    this.rotation += 0.1f;
+                return (true);
+            }
+            return (false);
         }
 
         public override void    update(GameTime time)

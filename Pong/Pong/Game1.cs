@@ -155,7 +155,22 @@ namespace Pong
         {
             if (this.is_paused == false)
             {
-                if ((kb_state.IsKeyDown(Keys.Space)) && fire1 == true)
+                 GamePadState        game_pad_state;
+
+                game_pad_state = GamePad.GetState(PlayerIndex.One);
+                if (game_pad_state.IsConnected && fire1 == true)
+                {
+                    if (game_pad_state.IsButtonDown(Buttons.LeftTrigger))
+                    {
+                        Scud scud;
+                        scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p1.Position.X + 50, p1.Position.Y + 26, 0, p1.rotation);
+                        scud.initialize();
+                        scud.loadContent(Content, "bullet");
+                        listScud.Add(scud);
+                        fire1 = false;
+                    }
+                }
+                else if ((kb_state.IsKeyDown(Keys.Space)) && fire1 == true)
                 {
                     Scud scud;
                     scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p1.Position.X + 50, p1.Position.Y + 26, 0, p1.rotation);
