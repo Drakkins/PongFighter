@@ -19,6 +19,7 @@ namespace Pong
         private List<Texture2D> listLifeP1;
         private List<Texture2D> listLifeP2;
         private Texture2D       ui;
+        private Texture2D       background;
         private Tank            p1;
         private Tank            p2;
         private SpriteFont      score_font;
@@ -66,9 +67,11 @@ namespace Pong
             listLifeP2 = new List<Texture2D>();
             this.p1 = new Tank(Window.ClientBounds.Width, Window.ClientBounds.Height, 1);
             this.p2 = new Tank(Window.ClientBounds.Width, Window.ClientBounds.Height, 2);
+            System.Console.Out.WriteLine("width = " + Window.ClientBounds.Width);
+            System.Console.Out.WriteLine("height = " + Window.ClientBounds.Height);
             this.p1.initialize();
             this.p2.initialize();
-            this.is_paused = true;
+            this.is_paused = false;
             explosionSpriteP1 = Content.Load<Texture2D>("explosion");
             explosionSpriteP2 = Content.Load<Texture2D>("explosion");
             
@@ -93,6 +96,7 @@ namespace Pong
             this.p2.loadContent(Content, "orange_tank_base");
             this.score_font = Content.Load<SpriteFont>("SquaredDisplay");
             this.ui = Content.Load<Texture2D>("ui_repeat");
+            this.background = Content.Load<Texture2D>("background");
         }
 
         protected override void     UnloadContent()
@@ -333,11 +337,12 @@ namespace Pong
             p2_score_pos = new Vector2(Window.ClientBounds.Width - 5 - p2_score_size.X, y_score);
             GraphicsDevice.Clear(Color.WhiteSmoke);
             spriteBatch.Begin();
-            
+            this.spriteBatch.Draw(this.background, new Vector2(0, 50), Color.White);
             this.p1.draw(spriteBatch, gameTime);
             this.p2.draw(spriteBatch, gameTime);
             this.drawScuds(gameTime);
             this.drawExplosion(gameTime);
+            
             this.drawUI();
             drawLife();
             this.spriteBatch.DrawString(this.score_font, p1.Name, p1_score_pos, Color.White);
