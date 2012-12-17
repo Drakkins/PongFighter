@@ -159,9 +159,11 @@ namespace Pong
         {
             if (this.is_paused == false)
             {
-                 GamePadState        game_pad_state;
+                GamePadState        game_pad_state;
+                GamePadState        game_pad_state_2;
 
                 game_pad_state = GamePad.GetState(PlayerIndex.One);
+                game_pad_state_2 = GamePad.GetState(PlayerIndex.Two);
                 if (game_pad_state.IsConnected && fire1 == true)
                 {
                     if (game_pad_state.IsButtonDown(Buttons.LeftTrigger))
@@ -172,6 +174,18 @@ namespace Pong
                         scud.loadContent(Content, "bullet");
                         listScud.Add(scud);
                         fire1 = false;
+                    }
+                }
+                else if (game_pad_state_2.IsConnected && fire2 == true)
+                {
+                    if (game_pad_state_2.IsButtonDown(Buttons.LeftTrigger))
+                    {
+                        Scud scud;
+                        scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p2.Position.X - 25, p2.Position.Y + 26, 1, p2.rotation);
+                        scud.initialize();
+                        scud.loadContent(Content, "bullet_orange");
+                        listScud.Add(scud);
+                        fire2 = false;
                     }
                 }
                 else if ((kb_state.IsKeyDown(Keys.Space)) && fire1 == true)

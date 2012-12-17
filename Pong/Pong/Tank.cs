@@ -98,30 +98,35 @@ namespace Pong
             }
             else
             {
-                if (kb_state.IsKeyDown(Keys.Down))
+                if (!xbox2())
                 {
-                    this.Direction = Vector2.UnitY;
-                    this.Speed = 0.3f;
+                    if (kb_state.IsKeyDown(Keys.Down))
+                    {
+                        this.Direction = Vector2.UnitY;
+                        this.Speed = 0.3f;
+                    }
+                    else if (kb_state.IsKeyDown(Keys.Up))
+                    {
+                        this.Direction = -Vector2.UnitY;
+                        this.Speed = 0.3f;
+                    }
+                    else
+                        this.Speed = 0f;
+                    if (kb_state.IsKeyDown(Keys.Right) && this.rotation < 1f)
+                        this.rotation += 0.1f;
+                    else if (kb_state.IsKeyDown(Keys.Left) && this.rotation > -1f)
+                        this.rotation -= 0.1f;
                 }
-                else if (kb_state.IsKeyDown(Keys.Up))
-                {
-                    this.Direction = -Vector2.UnitY;
-                    this.Speed = 0.3f;
-                }
-                else
-                    this.Speed = 0f;
-                if (kb_state.IsKeyDown(Keys.Right) && this.rotation < 1f)
-                    this.rotation += 0.1f;
-                else if (kb_state.IsKeyDown(Keys.Left) && this.rotation > -1f)
-                    this.rotation -= 0.1f;
             }
         }
 
         private Boolean         xboxController()
         {
             GamePadState        game_pad_state;
+            
 
             game_pad_state = GamePad.GetState(PlayerIndex.One);
+           
             if (game_pad_state.IsConnected)
             {
                 if (game_pad_state.IsButtonUp(Buttons.LeftThumbstickUp) || game_pad_state.IsButtonUp(Buttons.LeftThumbstickDown))
@@ -139,6 +144,35 @@ namespace Pong
                 if (game_pad_state.ThumbSticks.Right.X > 0 && game_pad_state.ThumbSticks.Right.Y >= 0 && this.rotation > -1f)
                     this.rotation -= 0.1f;
                 else if (game_pad_state.ThumbSticks.Right.X > 0 && game_pad_state.ThumbSticks.Right.Y <= 0 &&  this.rotation < 1f)
+                    this.rotation += 0.1f;
+                return (true);
+            }
+
+            return (false);
+        }
+
+        private Boolean xbox2()
+        {
+            GamePadState game_pad_state_2;
+
+            game_pad_state_2 = GamePad.GetState(PlayerIndex.Two);
+            if (game_pad_state_2.IsConnected)
+            {
+                if (game_pad_state_2.IsButtonUp(Buttons.LeftThumbstickUp) || game_pad_state_2.IsButtonUp(Buttons.LeftThumbstickDown))
+                    this.Speed = 0f;
+                if (game_pad_state_2.IsButtonDown(Buttons.LeftThumbstickUp))
+                {
+                    this.Direction = -Vector2.UnitY;
+                    this.Speed = 0.3f;
+                }
+                else if (game_pad_state_2.IsButtonDown(Buttons.LeftThumbstickDown))
+                {
+                    this.Direction = Vector2.UnitY;
+                    this.Speed = 0.3f;
+                }
+                if (game_pad_state_2.ThumbSticks.Right.X > 0 && game_pad_state_2.ThumbSticks.Right.Y >= 0 && this.rotation > -1f)
+                    this.rotation -= 0.1f;
+                else if (game_pad_state_2.ThumbSticks.Right.X > 0 && game_pad_state_2.ThumbSticks.Right.Y <= 0 && this.rotation < 1f)
                     this.rotation += 0.1f;
                 return (true);
             }
