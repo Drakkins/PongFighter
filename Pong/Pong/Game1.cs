@@ -176,7 +176,16 @@ namespace Pong
                         fire1 = false;
                     }
                 }
-                else if (game_pad_state_2.IsConnected && fire2 == true)
+                else if ((kb_state.IsKeyDown(Keys.Space)) && fire1 == true)
+                {
+                    Scud scud;
+                    scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p1.Position.X + 50, p1.Position.Y + 26, 0, p1.rotation);
+                    scud.initialize();
+                    scud.loadContent(Content, "bullet");
+                    listScud.Add(scud);
+                    fire1 = false;
+                }
+                if (game_pad_state_2.IsConnected && fire2 == true)
                 {
                     if (game_pad_state_2.IsButtonDown(Buttons.LeftTrigger))
                     {
@@ -187,15 +196,6 @@ namespace Pong
                         listScud.Add(scud);
                         fire2 = false;
                     }
-                }
-                else if ((kb_state.IsKeyDown(Keys.Space)) && fire1 == true)
-                {
-                    Scud scud;
-                    scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p1.Position.X + 50, p1.Position.Y + 26, 0, p1.rotation);
-                    scud.initialize();
-                    scud.loadContent(Content, "bullet");
-                    listScud.Add(scud);
-                    fire1 = false;
                 }
                 else if (kb_state.IsKeyDown(Keys.Enter) && fire2 == true)
                 {
@@ -209,7 +209,7 @@ namespace Pong
                 if (fire1 == false)
                 {
                     time1 += gameTime.ElapsedGameTime.TotalMilliseconds;
-                    if (time1 >= 200)
+                    if (time1 >= 500)
                     {
                         fire1 = true;
                         time1 = 0.00;
@@ -218,7 +218,7 @@ namespace Pong
                 if (fire2 == false)
                 {
                     time2 += gameTime.ElapsedGameTime.TotalMilliseconds;
-                    if (time2 >= 200)
+                    if (time2 >= 500)
                     {
                         fire2 = true;
                         time2 = 0.00;

@@ -170,9 +170,9 @@ namespace Pong
                     this.Direction = Vector2.UnitY;
                     this.Speed = 0.3f;
                 }
-                if (game_pad_state_2.ThumbSticks.Right.X > 0 && game_pad_state_2.ThumbSticks.Right.Y >= 0 && this.rotation > -1f)
+                if (game_pad_state_2.ThumbSticks.Right.X < 0 && game_pad_state_2.ThumbSticks.Right.Y <= 0 && this.rotation > -1f)
                     this.rotation -= 0.1f;
-                else if (game_pad_state_2.ThumbSticks.Right.X > 0 && game_pad_state_2.ThumbSticks.Right.Y <= 0 && this.rotation < 1f)
+                else if (game_pad_state_2.ThumbSticks.Right.X < 0 && game_pad_state_2.ThumbSticks.Right.Y >= 0 && this.rotation < 1f)
                     this.rotation += 0.1f;
                 return (true);
             }
