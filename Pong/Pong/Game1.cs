@@ -52,20 +52,9 @@ namespace Pong
             Content.RootDirectory = "Content";
         }
 
-        public void initLife()
-        {
-            int i = 0;
-
-            while (i < 7)
-            {
-
-                i++;
-            }
-        }
-
         protected override void Initialize()
         {
-            listScud = new List<Scud>();
+            this.listScud = new List<Scud>();
             this.p1 = new Tank(Window.ClientBounds.Width, Window.ClientBounds.Height, 1);
             this.p2 = new Tank(Window.ClientBounds.Width, Window.ClientBounds.Height, 2);
             this.p1.initialize();
@@ -83,16 +72,14 @@ namespace Pong
             SoundEffectInstance instance = bgEffect.CreateInstance();
             instance.IsLooped = true;
             bgEffect.Play(1f, 0.0f, 0.0f);
-            initLife();
             base.Initialize();
         }
 
         private void            restartGame()
         {
-            this.p1.initialize();
             this.p1.Life = 70;
-            this.p2.initialize();
             this.p2.Life = 70;
+            this.listScud.Clear();
         }
 
         protected override void     LoadContent()
