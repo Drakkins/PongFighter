@@ -22,32 +22,34 @@ namespace Pong
         private Texture2D       background;
         private Tank            p1;
         private Tank            p2;
-        private SpriteFont      score_font;
+        private SpriteFont      game_font;
         private Boolean         is_paused;
-        private double time1 = 0.00;
-        private double time2 = 0.00;
-        bool fire1 = true;
-        bool fire2 = true;
+        private double          time1 = 0.00;
+        private double          time2 = 0.00;
+        bool                    fire1 = true;
+        bool                    fire2 = true;
         private bool            end = false;
-        bool explosionP1 = false;
-        bool explosionP2 = false;
-        private Texture2D explosionSpriteP1;
-        private Texture2D explosionSpriteP2;
-        private double elapsedTimeP1 = 0.0;
-        private double elapsedTimeP2 = 0.0;
-        private int p1PosX = 0;
-        private int p1PosY = 0;
-        private int p2PosX = 0;
-        private int p2PosY = 0;
-
-        SoundEffect exp;
+        bool                    explosionP1 = false;
+        bool                    explosionP2 = false;
+        private Texture2D       explosionSpriteP1;
+        private Texture2D       explosionSpriteP2;
+        private Texture2D       xbox_button_a;
+        private double          elapsedTimeP1 = 0.0;
+        private double          elapsedTimeP2 = 0.0;
+        private int             p1PosX = 0;
+        private int             p1PosY = 0;
+        private int             p2PosX = 0;
+        private int             p2PosY = 0;
+        private int             width = 1024;
+        private int             height = 600;
+        SoundEffect             exp;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             this.graphics.IsFullScreen = true;
-            this.graphics.PreferredBackBufferWidth = 1024;
-            this.graphics.PreferredBackBufferHeight = 600;
+            this.graphics.PreferredBackBufferWidth = this.width;
+            this.graphics.PreferredBackBufferHeight = this.height;
 
             Content.RootDirectory = "Content";
         }
@@ -64,6 +66,7 @@ namespace Pong
             explosionSpriteP2 = Content.Load<Texture2D>("explosion");
             this.life_p1 = Content.Load<Texture2D>("lifebar");
             this.life_p2 = Content.Load<Texture2D>("lifebar2");
+            this.xbox_button_a = Content.Load<Texture2D>("Xbox A Button");
             exp = Content.Load<SoundEffect>("soundExplosion");
 
 
@@ -87,7 +90,7 @@ namespace Pong
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
             this.p1.loadContent(Content, "green_tank_base");
             this.p2.loadContent(Content, "orange_tank_base");
-            this.score_font = Content.Load<SpriteFont>("SquaredDisplay");
+            this.game_font = Content.Load<SpriteFont>("SquaredDisplay");
             this.ui = Content.Load<Texture2D>("ui_repeat");
             this.background = Content.Load<Texture2D>("background");
         }
@@ -333,8 +336,8 @@ namespace Pong
                 Vector2 p2_score_pos;
                 int y_score = 8;
 
-                p1_score_size = this.score_font.MeasureString(this.p1.Name);
-                p2_score_size = this.score_font.MeasureString(this.p2.Name);
+                p1_score_size = this.game_font.MeasureString(this.p1.Name);
+                p2_score_size = this.game_font.MeasureString(this.p2.Name);
                 p1_score_pos = new Vector2(5, y_score);
                 p2_score_pos = new Vector2(Window.ClientBounds.Width - 5 - p2_score_size.X, y_score);
                 GraphicsDevice.Clear(Color.WhiteSmoke);
@@ -347,14 +350,25 @@ namespace Pong
 
                 this.drawUI();
                 drawLife();
-                this.spriteBatch.DrawString(this.score_font, p1.Name, p1_score_pos, Color.White);
-                this.spriteBatch.DrawString(this.score_font, p2.Name, p2_score_pos, Color.White);
+                this.spriteBatch.DrawString(this.game_font, p1.Name, p1_score_pos, Color.White);
+                this.spriteBatch.DrawString(this.game_font, p2.Name, p2_score_pos, Color.White);
                 spriteBatch.End();
             }
             else
             {
+                String              msg_restart_begin = "Press";
+                String              msg_restart_end = "to restart the game";
+                float               x_msg_restart;
+                Vector2             msg_restart_begin_size;
+                Vector2             msg_restart_end_size;
+
+                msg_restart_begin_size = this.game_font.MeasureString(msg_restart_begin);
+                msg_restart_end_size = this.game_font.MeasureString(msg_restart_end);
+                x_msg_restart = this.width / 2 - ((msg_restart_begin_size.X + this.xbox_button_a.Width + msg_restart_end_size.X) / 2);
                 spriteBatch.Begin();
-                this.spriteBatch.DrawString(this.score_font, "Press \"Enter\" to restart the game", new Vector2(0, 0), Color.White);
+                this.spriteBatch.DrawString(this.game_font, msg_restart_begin, new Vector2(x_msg_restart, this.height - msg_restart_begin_size.Y - 15), Color.White);
+                this.spriteBatch.Draw(this.xbox_button_a, new Vector2(x_msg_restart + msg_restart_begin_size.X + 10, this.height - msg_restart_begin_size.Y - 20), Color.White);
+                this.spriteBatch.DrawString(this.game_font, msg_restart_end, new Vector2(x_msg_restart + msg_restart_begin_size.X + 20 + this.xbox_button_a.Width, this.height - msg_restart_begin_size.Y - 15), Color.White);
                 spriteBatch.End();
             }
             base.Draw(gameTime);
