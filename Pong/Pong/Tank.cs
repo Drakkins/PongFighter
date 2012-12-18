@@ -192,6 +192,15 @@ namespace Pong
             base.update(time);
         }
 
+        public bool             isAlive()
+        {
+            bool                res = true;
+
+            if (this.life <= 0)
+                res = false;
+            return (res);
+        }
+
         public override void    draw(SpriteBatch sprite_batch, GameTime time)
         {
             Vector2             position_canon;

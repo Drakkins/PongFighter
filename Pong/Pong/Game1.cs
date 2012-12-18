@@ -34,6 +34,8 @@ namespace Pong
         private Texture2D       explosionSpriteP1;
         private Texture2D       explosionSpriteP2;
         private Texture2D       xbox_button_a;
+        private Texture2D       key_r;
+        private bool            xbox_controler = false;
         private double          elapsedTimeP1 = 0.0;
         private double          elapsedTimeP2 = 0.0;
         private int             p1PosX = 0;
@@ -50,7 +52,6 @@ namespace Pong
             this.graphics.IsFullScreen = true;
             this.graphics.PreferredBackBufferWidth = this.width;
             this.graphics.PreferredBackBufferHeight = this.height;
-
             Content.RootDirectory = "Content";
         }
 
@@ -67,9 +68,8 @@ namespace Pong
             this.life_p1 = Content.Load<Texture2D>("lifebar");
             this.life_p2 = Content.Load<Texture2D>("lifebar2");
             this.xbox_button_a = Content.Load<Texture2D>("Xbox A Button");
+            this.key_r = Content.Load<Texture2D>("Key R");
             exp = Content.Load<SoundEffect>("soundExplosion");
-
-
             SoundEffect bgEffect;
             bgEffect = Content.Load<SoundEffect>("soundGame");
             SoundEffectInstance instance = bgEffect.CreateInstance();
@@ -126,7 +126,7 @@ namespace Pong
             }
             else
             {
-                if (kb_state.IsKeyDown(Keys.Enter))
+                if (kb_state.IsKeyDown(Keys.R))
                 {
                     this.restartGame();
                     this.end = false;
@@ -175,6 +175,8 @@ namespace Pong
 
                 game_pad_state = GamePad.GetState(PlayerIndex.One);
                 game_pad_state_2 = GamePad.GetState(PlayerIndex.Two);
+                if (game_pad_state.IsConnected)
+                    this.xbox_controler = true;
                 if (game_pad_state.IsConnected && fire1 == true)
                 {
                     if (game_pad_state.IsButtonDown(Buttons.LeftTrigger))
@@ -358,16 +360,26 @@ namespace Pong
             {
                 String              msg_restart_begin = "Press";
                 String              msg_restart_end = "to restart the game";
+                String              msg_win;
                 float               x_msg_restart;
                 Vector2             msg_restart_begin_size;
                 Vector2             msg_restart_end_size;
 
+                if (this.p1.isAlive())
+                    msg_win = this.p1.Name;
+                else
+                    msg_win = this.p2.Name;
+                msg_win += " won the game !";
                 msg_restart_begin_size = this.game_font.MeasureString(msg_restart_begin);
                 msg_restart_end_size = this.game_font.MeasureString(msg_restart_end);
                 x_msg_restart = this.width / 2 - ((msg_restart_begin_size.X + this.xbox_button_a.Width + msg_restart_end_size.X) / 2);
                 spriteBatch.Begin();
+                this.spriteBatch.DrawString(this.game_font, msg_win, new Vector2(this.width / 2, this.height / 2), Color.White);
                 this.spriteBatch.DrawString(this.game_font, msg_restart_begin, new Vector2(x_msg_restart, this.height - msg_restart_begin_size.Y - 15), Color.White);
-                this.spriteBatch.Draw(this.xbox_button_a, new Vector2(x_msg_restart + msg_restart_begin_size.X + 10, this.height - msg_restart_begin_size.Y - 20), Color.White);
+                if (this.xbox_controler)
+                    this.spriteBatch.Draw(this.xbox_button_a, new Vector2(x_msg_restart + msg_restart_begin_size.X + 10, this.height - msg_restart_begin_size.Y - 20), Color.White);
+                else
+                    this.spriteBatch.Draw(this.key_r, new Vector2(x_msg_restart + msg_restart_begin_size.X + 10, this.height - msg_restart_begin_size.Y - 20), Color.White);
                 this.spriteBatch.DrawString(this.game_font, msg_restart_end, new Vector2(x_msg_restart + msg_restart_begin_size.X + 20 + this.xbox_button_a.Width, this.height - msg_restart_begin_size.Y - 15), Color.White);
                 spriteBatch.End();
             }
