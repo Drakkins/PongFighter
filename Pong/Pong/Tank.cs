@@ -50,7 +50,7 @@ namespace Pong
             this.player_number = nb;
             this.name = "Player " + nb;
             this.rotation = 0;
-            this.life = 70;
+            this.life = 100;
         }
 
         public override void initialize()

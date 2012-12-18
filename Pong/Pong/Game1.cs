@@ -77,8 +77,8 @@ namespace Pong
 
         private void            restartGame()
         {
-            this.p1.Life = 70;
-            this.p2.Life = 70;
+            this.p1.Life = 100;
+            this.p2.Life = 100;
             this.listScud.Clear();
         }
 
@@ -308,7 +308,7 @@ namespace Pong
         {
             int x1 = 140;
             int y1 = 8;
-            int x2 = 610;
+            int x2 = 820;
             int y2 = 8;
 
             for (int i = 0; i < this.p1.Life; i += 10)
