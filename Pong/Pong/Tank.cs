@@ -21,6 +21,12 @@ namespace Pong
         public float        rotation;
         private Vector2     origin;
         private int         y_min = 50;
+        public int          Life
+        {
+            set { life = value; }
+            get { return life; }
+        }
+        private int         life;
 
         public Rectangle CollisionRectangle
         {
@@ -37,7 +43,6 @@ namespace Pong
             set { name = value; }
         }
 
-
         public                  Tank(int width, int height, int nb)
         {
             this.screen_width = width;
@@ -45,6 +50,7 @@ namespace Pong
             this.player_number = nb;
             this.name = "Player " + nb;
             this.rotation = 0;
+            this.life = 70;
         }
 
         public override void initialize()

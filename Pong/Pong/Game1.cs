@@ -16,8 +16,8 @@ namespace Pong
         GraphicsDeviceManager   graphics;
         SpriteBatch             spriteBatch;
         private List<Scud>      listScud;
-        private List<Texture2D> listLifeP1;
-        private List<Texture2D> listLifeP2;
+        private Texture2D       life_p1;
+        private Texture2D       life_p2;
         private Texture2D       ui;
         private Texture2D       background;
         private Tank            p1;
@@ -28,7 +28,7 @@ namespace Pong
         private double time2 = 0.00;
         bool fire1 = true;
         bool fire2 = true;
-
+        private bool            end = false;
         bool explosionP1 = false;
         bool explosionP2 = false;
         private Texture2D explosionSpriteP1;
@@ -45,7 +45,10 @@ namespace Pong
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.IsFullScreen = true;
+            this.graphics.IsFullScreen = true;
+            this.graphics.PreferredBackBufferWidth = 1024;
+            this.graphics.PreferredBackBufferHeight = 600;
+
             Content.RootDirectory = "Content";
         }
 
@@ -55,8 +58,7 @@ namespace Pong
 
             while (i < 7)
             {
-                listLifeP1.Add(Content.Load<Texture2D>("lifebar"));
-                listLifeP2.Add(Content.Load<Texture2D>("lifebar2"));
+
                 i++;
             }
         }
@@ -64,18 +66,15 @@ namespace Pong
         protected override void Initialize()
         {
             listScud = new List<Scud>();
-            listLifeP1 = new List<Texture2D>();
-            listLifeP2 = new List<Texture2D>();
             this.p1 = new Tank(Window.ClientBounds.Width, Window.ClientBounds.Height, 1);
             this.p2 = new Tank(Window.ClientBounds.Width, Window.ClientBounds.Height, 2);
-            System.Console.Out.WriteLine("width = " + Window.ClientBounds.Width);
-            System.Console.Out.WriteLine("height = " + Window.ClientBounds.Height);
             this.p1.initialize();
             this.p2.initialize();
             this.is_paused = false;
             explosionSpriteP1 = Content.Load<Texture2D>("explosion");
             explosionSpriteP2 = Content.Load<Texture2D>("explosion");
-            
+            this.life_p1 = Content.Load<Texture2D>("lifebar");
+            this.life_p2 = Content.Load<Texture2D>("lifebar2");
             exp = Content.Load<SoundEffect>("soundExplosion");
 
 
@@ -84,10 +83,16 @@ namespace Pong
             SoundEffectInstance instance = bgEffect.CreateInstance();
             instance.IsLooped = true;
             bgEffect.Play(1f, 0.0f, 0.0f);
-
             initLife();
-
             base.Initialize();
+        }
+
+        private void            restartGame()
+        {
+            this.p1.initialize();
+            this.p1.Life = 70;
+            this.p2.initialize();
+            this.p2.Life = 70;
         }
 
         protected override void     LoadContent()
@@ -106,27 +111,44 @@ namespace Pong
 
         protected override void     Update(GameTime gameTime)
         {
-            KeyboardState       kb_state;
+            KeyboardState           kb_state;
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
-            this.updateExplosion(gameTime);
             kb_state = Keyboard.GetState();
-            this.addScuds(kb_state, gameTime);
-            if (!this.is_paused)
+            if (kb_state.IsKeyDown(Keys.Escape))
+                this.Exit();
+            if (!this.end)
             {
-                this.p1.handleInput(kb_state, Mouse.GetState());
-                this.p1.update(gameTime);
-                this.p2.handleInput(kb_state, Mouse.GetState());
-                this.p2.update(gameTime);
-                this.checkIfBallOut();
+                this.updateExplosion(gameTime);
+                this.addScuds(kb_state, gameTime);
+                if (!this.is_paused)
+                {
+                    this.p1.handleInput(kb_state, Mouse.GetState());
+                    this.p1.update(gameTime);
+                    this.p2.handleInput(kb_state, Mouse.GetState());
+                    this.p2.update(gameTime);
+                }
+                else
+                {
+                    if (kb_state.IsKeyDown(Keys.Space))
+                        this.is_paused = false;
+                }
+                this.checkEnd();
             }
             else
             {
-                if (kb_state.IsKeyDown(Keys.Space))
-                    this.is_paused = false;
+                if (kb_state.IsKeyDown(Keys.Enter))
+                {
+                    this.restartGame();
+                    this.end = false;
+                }
             }
             base.Update(gameTime);
+        }
+
+        private void        checkEnd()
+        {
+            if (this.p1.Life <= 0 || this.p2.Life <= 0)
+                this.end = true;
         }
 
         private void drawScuds(GameTime gameTime)
@@ -140,17 +162,15 @@ namespace Pong
                 {
                     explosionP1 = true;
                     listScud.Remove(listScud[i]);
+                    this.p1.Life -= 10;
                     exp.Play();
-                    if (listLifeP1.Count >= 1)
-                        listLifeP1.RemoveAt(listLifeP1.Count - 1);
                 }
                 else if ((listScud[i].Direction.X > 0 && this.p2.CollisionRectangle.Contains((int)listScud[i].Position.X + listScud[i].Texture.Width, (int)listScud[i].Position.Y + listScud[i].Texture.Height / 2)))
                 {
                     explosionP2 = true;
+                    this.p2.Life -= 10;
                     listScud.Remove(listScud[i]);
                     exp.Play();
-                    if (listLifeP2.Count >= 1)
-                        listLifeP2.RemoveAt(listLifeP2.Count - 1);
                 }
                 i++;
             }
@@ -286,24 +306,6 @@ namespace Pong
             }
         }
 
-        private void                checkIfBallOut()
-        {
-            /*if (this.ball.Position.X <= 0)
-            {
-                this.p2.Score++;
-                //this.ball.initialize();
-                //this.ball.Position = new Vector2(Window.ClientBounds.Width / 2 - this.ball.Texture.Width / 2, Window.ClientBounds.Height / 2 - this.ball.Texture.Height / 2);
-                this.is_paused = true;
-            }
-            else if (this.ball.Position.X >= Window.ClientBounds.Width - this.ball.Texture.Width)
-            {
-                this.p1.Score++;
-                this.ball.initialize();
-                this.ball.Position = new Vector2(Window.ClientBounds.Width / 2 - this.ball.Texture.Width / 2, Window.ClientBounds.Height / 2 - this.ball.Texture.Height / 2);
-                this.is_paused = true;
-            }*/
-        }
-
         private void        drawUI()
         {
             int             x = 0;
@@ -317,52 +319,57 @@ namespace Pong
 
         public void         drawLife()
         {
-            int i = 0;
             int x1 = 140;
             int y1 = 8;
             int x2 = 610;
             int y2 = 8;
 
-            while (i < listLifeP1.Count)
+            for (int i = 0; i < this.p1.Life; i += 10)
             {
-                spriteBatch.Draw(listLifeP1[i], new Vector2(x1, y1), Color.White);
-                i++;
+                spriteBatch.Draw(this.life_p1, new Vector2(x1, y1), Color.White);
                 x1 += 30;
             }
-            i = 0;
-            while (i < listLifeP2.Count)
+            for (int i = 0; i < this.p2.Life; i += 10)
             {
-                spriteBatch.Draw(listLifeP2[i], new Vector2(x2, y2), Color.White);
-                i++;
+                spriteBatch.Draw(this.life_p2, new Vector2(x2, y2), Color.White);
                 x2 -= 30;
             }
         }
 
         protected override void     Draw(GameTime gameTime)
         {
-            Vector2                 p1_score_size;
-            Vector2                 p1_score_pos;
-            Vector2                 p2_score_size;
-            Vector2                 p2_score_pos;
-            int                     y_score = 8;
+            if (!this.end)
+            {
+                Vector2 p1_score_size;
+                Vector2 p1_score_pos;
+                Vector2 p2_score_size;
+                Vector2 p2_score_pos;
+                int y_score = 8;
 
-            p1_score_size = this.score_font.MeasureString(this.p1.Name);
-            p2_score_size = this.score_font.MeasureString(this.p2.Name);
-            p1_score_pos = new Vector2(5, y_score);
-            p2_score_pos = new Vector2(Window.ClientBounds.Width - 5 - p2_score_size.X, y_score);
-            GraphicsDevice.Clear(Color.WhiteSmoke);
-            spriteBatch.Begin();
-            this.spriteBatch.Draw(this.background, new Vector2(0, 50), Color.White);
-            this.p1.draw(spriteBatch, gameTime);
-            this.p2.draw(spriteBatch, gameTime);
-            this.drawScuds(gameTime);
-            this.drawExplosion(gameTime);
-            
-            this.drawUI();
-            drawLife();
-            this.spriteBatch.DrawString(this.score_font, p1.Name, p1_score_pos, Color.White);
-            this.spriteBatch.DrawString(this.score_font, p2.Name, p2_score_pos, Color.White);
-            spriteBatch.End();
+                p1_score_size = this.score_font.MeasureString(this.p1.Name);
+                p2_score_size = this.score_font.MeasureString(this.p2.Name);
+                p1_score_pos = new Vector2(5, y_score);
+                p2_score_pos = new Vector2(Window.ClientBounds.Width - 5 - p2_score_size.X, y_score);
+                GraphicsDevice.Clear(Color.WhiteSmoke);
+                spriteBatch.Begin();
+                this.spriteBatch.Draw(this.background, new Vector2(0, 50), Color.White);
+                this.p1.draw(spriteBatch, gameTime);
+                this.p2.draw(spriteBatch, gameTime);
+                this.drawScuds(gameTime);
+                this.drawExplosion(gameTime);
+
+                this.drawUI();
+                drawLife();
+                this.spriteBatch.DrawString(this.score_font, p1.Name, p1_score_pos, Color.White);
+                this.spriteBatch.DrawString(this.score_font, p2.Name, p2_score_pos, Color.White);
+                spriteBatch.End();
+            }
+            else
+            {
+                spriteBatch.Begin();
+                this.spriteBatch.DrawString(this.score_font, "Press \"Enter\" to restart the game", new Vector2(0, 0), Color.White);
+                spriteBatch.End();
+            }
             base.Draw(gameTime);
         }
     }

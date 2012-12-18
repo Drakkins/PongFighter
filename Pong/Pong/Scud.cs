@@ -58,12 +58,6 @@ namespace                       Pong
                 Speed += 0.05f;
                 this.rotation = -this.rotation;
             }
-           /* if ((Direction.X < 0 && p1_rect.Contains((int)Position.X, (int)Position.Y + Texture.Height / 2)) || (Direction.X > 0 && p2_rect.Contains((int)Position.X + Texture.Width, (int)Position.Y + Texture.Height / 2)))
-            {
-                Direction = new Vector2(-Direction.X, Direction.Y);
-                this.rotation = -this.rotation;
-                Speed += 0.05f;
-            }*/
             base.update(time);
         }
 
