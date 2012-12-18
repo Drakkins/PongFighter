@@ -362,6 +362,7 @@ namespace Pong
                 String              msg_restart_end = "to restart the game";
                 String              msg_win;
                 float               x_msg_restart;
+                Vector2             msg_win_size;
                 Vector2             msg_restart_begin_size;
                 Vector2             msg_restart_end_size;
 
@@ -370,11 +371,12 @@ namespace Pong
                 else
                     msg_win = this.p2.Name;
                 msg_win += " won the game !";
+                msg_win_size = this.game_font.MeasureString(msg_win);
                 msg_restart_begin_size = this.game_font.MeasureString(msg_restart_begin);
                 msg_restart_end_size = this.game_font.MeasureString(msg_restart_end);
                 x_msg_restart = this.width / 2 - ((msg_restart_begin_size.X + this.xbox_button_a.Width + msg_restart_end_size.X) / 2);
                 spriteBatch.Begin();
-                this.spriteBatch.DrawString(this.game_font, msg_win, new Vector2(this.width / 2, this.height / 2), Color.White);
+                this.spriteBatch.DrawString(this.game_font, msg_win, new Vector2(this.width / 2 - msg_win_size.X / 2, this.height / 2 - msg_win_size.Y / 2), Color.White);
                 this.spriteBatch.DrawString(this.game_font, msg_restart_begin, new Vector2(x_msg_restart, this.height - msg_restart_begin_size.Y - 15), Color.White);
                 if (this.xbox_controler)
                     this.spriteBatch.Draw(this.xbox_button_a, new Vector2(x_msg_restart + msg_restart_begin_size.X + 10, this.height - msg_restart_begin_size.Y - 20), Color.White);
