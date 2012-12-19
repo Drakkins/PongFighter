@@ -119,6 +119,9 @@ namespace Pong
             Bonus shield = new Bonus("SHIELD", Window.ClientBounds.Width / 2, 0);
             shield.loadContent(Content, "shield");
             listBonus.Add(shield);
+            Bonus canon = new Bonus("CANON", Window.ClientBounds.Width / 2, 0);
+            canon.loadContent(Content, "canon");
+            listBonus.Add(canon);
         }
 
         protected override void     UnloadContent()
@@ -427,6 +430,10 @@ namespace Pong
                         shieldP1 = true;
                     else if ((listBonus[currentBonusId].bonusName == "SHIELD") && (listScud[i].player == 1))
                         shieldP2 = true;
+                    if ((listBonus[currentBonusId].bonusName == "CANON") && (listScud[i].player == 0))
+                        p1.setDoubleCanon();
+                    else if ((listBonus[currentBonusId].bonusName == "CANON") && (listScud[i].player == 1))
+                        p2.setDoubleCanon();
                 }
                 i++;
             }
@@ -435,7 +442,7 @@ namespace Pong
         public void checkBonus(GameTime gameTime)
         {
             Random rand1 = new Random();
-            int random1 = rand1.Next(0, 500);
+            int random1 = rand1.Next(0, 300);
 
             if (bonusActived == true)
             {
@@ -454,10 +461,10 @@ namespace Pong
 
             if (isBonus == false && bonusActived == false)
             {
-                if (random1 == 250)
+                if (random1 == 150)
                 {
                     currentBonusId += 1;
-                    if (currentBonusId == 2)
+                    if (currentBonusId == 3)
                         currentBonusId = 0;
                     isBonus = true;
                 }

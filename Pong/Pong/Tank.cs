@@ -14,7 +14,7 @@ namespace Pong
 {
     class                   Tank : Sprite
     {
-        private bool        double_canon = true;
+        private bool        double_canon = false;
         private int         screen_width;
         private int         screen_height;
         private int         player_number;
