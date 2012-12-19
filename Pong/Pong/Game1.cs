@@ -90,8 +90,8 @@ namespace Pong
 
         private void            restartGame()
         {
-            this.p1.Life = 100;
-            this.p2.Life = 100;
+            this.p1.restartTank();
+            this.p2.restartTank();
             this.listScud.Clear();
         }
 
@@ -230,7 +230,7 @@ namespace Pong
             scud.loadContent(Content, "bullet_orange");
             listScud.Add(scud);
             fire2 = false;
-            if (this.p1.getDoubleCanon())
+            if (this.p2.getDoubleCanon())
             {
                 scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p2.Position.X - 25, p2.Position.Y + 36, 1, p2.rotation);
                 scud.initialize();

@@ -220,6 +220,12 @@ namespace Pong
                 sprite_batch.Draw(this.texture_double_canon, position_canon, null, Color.White, this.rotation, this.origin, 1.0f, SpriteEffects.None, 0f);
         }
 
+        public void             restartTank()
+        {
+            this.life = 100;
+            this.double_canon = false;
+        }
+
         public void             setDoubleCanon()
         {
             this.double_canon = true;
