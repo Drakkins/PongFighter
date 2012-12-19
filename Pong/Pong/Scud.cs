@@ -16,7 +16,7 @@ namespace                       Pong
     {
         private int             screen_width;
         private int             screen_height;
-        private int player;
+        public int player;
         public float rotation;
         private float posX;
         private float posY;

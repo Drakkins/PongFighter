@@ -2,17 +2,19 @@ Content\green_tank_base.xnb
 Content\orange_tank_base.xnb
 Content\green_tank_canon.xnb
 Content\orange_tank_canon.xnb
-Content\impact.xnb
 Content\bullet.xnb
+Content\impact.xnb
 Content\bullet_orange.xnb
 Content\explosion.xnb
-Content\life.xnb
 Content\soundExplosion.xnb
+Content\life.xnb
 Content\soundGame.xnb
+Content\SquaredDisplay.xnb
 Content\lifebar.xnb
 Content\lifebar2.xnb
 Content\ui_repeat.xnb
-Content\SquaredDisplay.xnb
 Content\background.xnb
 Content\Xbox A Button.xnb
 Content\Key R.xnb
+Content\speed.xnb
+Content\shield.xnb
