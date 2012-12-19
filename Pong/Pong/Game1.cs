@@ -19,11 +19,16 @@ namespace Pong
         private List<Bonus>     listBonus;
         private int             currentBonusId = -1;
         private double          elapsedTimeBonus = 0.0;
+        private double          elapsedTimeShield = 0.0;
         private Boolean         isBonus = false;
         private Boolean         bonusActived = false;
         private int             speedShot1 = 500;
         private int             speedShot2 = 500;
-        Boolean                 shieldAnim = false;
+        private Texture2D       shieldTexture;
+        Boolean                 shieldP1 = false;
+        Boolean                 shieldP2 = false;
+        private int             shieldP1PosX = 0;
+        private int             shieldP2PosX = 0;
         private Texture2D       life_p1;
         private Texture2D       life_p2;
         private Texture2D       ui;
@@ -75,6 +80,7 @@ namespace Pong
             explosionSpriteP1 = Content.Load<Texture2D>("explosion");
             explosionSpriteP2 = Content.Load<Texture2D>("explosion");
             this.life_p1 = Content.Load<Texture2D>("lifebar");
+            shieldTexture = Content.Load<Texture2D>("shield_anim");
             this.life_p2 = Content.Load<Texture2D>("lifebar2");
             this.xbox_button_a = Content.Load<Texture2D>("Xbox A Button");
             this.key_r = Content.Load<Texture2D>("Key R");
@@ -106,9 +112,9 @@ namespace Pong
             Bonus speed = new Bonus("SPEED", Window.ClientBounds.Width / 2, 0);
             speed.loadContent(Content, "speed");
             listBonus.Add(speed);
-            speed = new Bonus("SHIELD", Window.ClientBounds.Width / 2, 0);
-            speed.loadContent(Content, "shield");
-            listBonus.Add(speed);
+            Bonus shield = new Bonus("SHIELD", Window.ClientBounds.Width / 2, 0);
+            shield.loadContent(Content, "shield");
+            listBonus.Add(shield);
         }
 
         protected override void     UnloadContent()
@@ -126,6 +132,7 @@ namespace Pong
             {
                 checkBonus(gameTime);
                 this.updateExplosion(gameTime);
+                this.updateShield(gameTime);
                 this.addScuds(kb_state, gameTime);
                 if (!this.is_paused)
                 {
@@ -167,17 +174,23 @@ namespace Pong
                 listScud[i].update(gameTime, this.p1.CollisionRectangle, this.p2.CollisionRectangle);
                 if ((listScud[i].Direction.X < 0 && this.p1.CollisionRectangle.Contains((int)listScud[i].Position.X, (int)listScud[i].Position.Y + listScud[i].Texture.Height / 2)))
                 {
-                    explosionP1 = true;
                     listScud.Remove(listScud[i]);
-                    this.p1.Life -= 10;
-                    exp.Play();
+                    if (shieldP1 == false)
+                    {
+                        explosionP1 = true;
+                        this.p1.Life -= 10;
+                        exp.Play();
+                    }
                 }
                 else if ((listScud[i].Direction.X > 0 && this.p2.CollisionRectangle.Contains((int)listScud[i].Position.X + listScud[i].Texture.Width, (int)listScud[i].Position.Y + listScud[i].Texture.Height / 2)))
                 {
-                    explosionP2 = true;
-                    this.p2.Life -= 10;
                     listScud.Remove(listScud[i]);
-                    exp.Play();
+                    if (shieldP2 == false)
+                    {
+                        explosionP2 = true;
+                        this.p2.Life -= 10;
+                        exp.Play();
+                    }
                 }
                 i++;
             }
@@ -315,6 +328,52 @@ namespace Pong
             }
         }
 
+        private void updateShield(GameTime gameTime)
+        { 
+                if (shieldP1 == true)
+                {
+                    elapsedTimeShield += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                    if (elapsedTimeShield >= 80)
+                    {
+                        shieldP1PosX += 102;
+
+                        if (shieldP1PosX == 816)
+                        {
+                            shieldP1PosX = 0;
+                        }
+                        elapsedTimeShield = 0.0;
+                    }
+                }
+                else if (shieldP2 == true)
+                {
+                    elapsedTimeShield += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                    if (elapsedTimeShield >= 80)
+                    {
+                        shieldP2PosX += 102;
+
+                        if (shieldP2PosX == 816)
+                        {
+                            shieldP2PosX = 0;
+                        }
+                        elapsedTimeShield = 0.0;
+                    }
+                }
+        }
+
+        private void drawShield(GameTime gameTime)
+        {
+            if (shieldP1 == true)
+            {
+                spriteBatch.Draw(shieldTexture, new Rectangle((int)p1.Position.X - 35, (int)p1.Position.Y - 25, 102, 102), new Rectangle(shieldP1PosX, 0, 102, 102), Color.White);
+            }
+            if (shieldP2 == true)
+            {
+                spriteBatch.Draw(shieldTexture, new Rectangle((int)p2.Position.X - 35, (int)p2.Position.Y - 25, 102, 102), new Rectangle(shieldP2PosX, 0, 102, 102), Color.White);
+            }
+        }
+
         private void        drawUI()
         {
             int             x = 0;
@@ -360,6 +419,10 @@ namespace Pong
                         speedShot1 = 150;
                     else if ((listScud[i].player) == 1 && (listBonus[currentBonusId].bonusName == "SPEED"))
                         speedShot2 = 150;
+                    if ((listBonus[currentBonusId].bonusName == "SHIELD") && (listScud[i].player == 0))
+                        shieldP1 = true;
+                    else if ((listBonus[currentBonusId].bonusName == "SHIELD") && (listScud[i].player == 1))
+                        shieldP2 = true;
                 }
                 i++;
             }
@@ -373,16 +436,19 @@ namespace Pong
             if (bonusActived == true)
             {
                 elapsedTimeBonus += gameTime.ElapsedGameTime.Milliseconds;
-                if (elapsedTimeBonus >= 3000)
+                if (elapsedTimeBonus >= 5000)
                 {
                     elapsedTimeBonus = 0.0;
+                    elapsedTimeShield = 0.0;
                     bonusActived = false;
+                    shieldP1 = false;
+                    shieldP2 = false;
                     speedShot2 = 500;
                     speedShot1 = 500;
                 }
             }
 
-            if (isBonus == false)
+            if (isBonus == false && bonusActived == false)
             {
                 if (random1 == 250)
                 {
@@ -434,6 +500,7 @@ namespace Pong
                 this.p2.draw(spriteBatch, gameTime);
                 this.drawScuds(gameTime);
                 this.drawExplosion(gameTime);
+                this.drawShield(gameTime);
 
                 this.drawUI();
                 drawLife();

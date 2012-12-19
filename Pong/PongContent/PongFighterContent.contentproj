@@ -157,7 +157,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="shield.png">
+    <Compile Include="shield_anim.png">
+      <Name>shield_anim</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="shield.jpg">
       <Name>shield</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
