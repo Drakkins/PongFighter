@@ -33,6 +33,8 @@ namespace Pong
         private Texture2D       life_p2;
         private Texture2D       ui;
         private Texture2D       background;
+        private Texture2D       tree;
+        private Texture2D       road;
         private Tank            p1;
         private Tank            p2;
         private SpriteFont      game_font;
@@ -79,11 +81,8 @@ namespace Pong
             this.is_paused = false;
             explosionSpriteP1 = Content.Load<Texture2D>("explosion");
             explosionSpriteP2 = Content.Load<Texture2D>("explosion");
-            this.life_p1 = Content.Load<Texture2D>("lifebar");
+
             shieldTexture = Content.Load<Texture2D>("shield_anim");
-            this.life_p2 = Content.Load<Texture2D>("lifebar2");
-            this.xbox_button_a = Content.Load<Texture2D>("Xbox A Button");
-            this.key_r = Content.Load<Texture2D>("Key R");
             exp = Content.Load<SoundEffect>("soundExplosion");
             SoundEffect bgEffect;
             bgEffect = Content.Load<SoundEffect>("soundGame");
@@ -108,7 +107,12 @@ namespace Pong
             this.game_font = Content.Load<SpriteFont>("SquaredDisplay");
             this.ui = Content.Load<Texture2D>("ui_repeat");
             this.background = Content.Load<Texture2D>("background");
-
+            this.road = Content.Load<Texture2D>("road");
+            this.tree = Content.Load<Texture2D>("tree");
+            this.life_p1 = Content.Load<Texture2D>("lifebar");
+            this.life_p2 = Content.Load<Texture2D>("lifebar2");
+            this.xbox_button_a = Content.Load<Texture2D>("Xbox A Button");
+            this.key_r = Content.Load<Texture2D>("Key R");
             Bonus speed = new Bonus("SPEED", Window.ClientBounds.Width / 2, 0);
             speed.loadContent(Content, "speed");
             listBonus.Add(speed);
@@ -478,6 +482,35 @@ namespace Pong
             }
         }
 
+        private void                drawBackground()
+        {
+            int                     x = 0;
+            int                     y = 50;
+
+            while (y < this.height)
+            {
+                x = 0;
+                while (x < this.width)
+                {
+                    this.spriteBatch.Draw(this.background, new Vector2(x, y), Color.White);
+                    x += this.background.Width;
+                }
+                y += this.background.Height;
+            }
+            y = 50;            
+            while (y < this.height)
+            {
+                this.spriteBatch.Draw(this.road, new Vector2(-2, y), Color.White);
+                this.spriteBatch.Draw(this.road, new Vector2(this.width - this.road.Width + 10, y), Color.White);
+                y += this.road.Height;
+            }
+            this.spriteBatch.Draw(this.tree, new Vector2(300, 250), Color.White);
+            this.spriteBatch.Draw(this.tree, new Vector2(320, 450), Color.White);
+            this.spriteBatch.Draw(this.tree, new Vector2(600, 150), Color.White);
+            this.spriteBatch.Draw(this.tree, new Vector2(100, 350), Color.White);
+
+        }
+
         protected override void     Draw(GameTime gameTime)
         {
             if (!this.end)
@@ -494,7 +527,7 @@ namespace Pong
                 p2_score_pos = new Vector2(Window.ClientBounds.Width - 5 - p2_score_size.X, y_score);
                 GraphicsDevice.Clear(Color.WhiteSmoke);
                 spriteBatch.Begin();
-                this.spriteBatch.Draw(this.background, new Vector2(0, 50), Color.White);
+                this.drawBackground();
                 drawBonus(gameTime);
                 this.p1.draw(spriteBatch, gameTime);
                 this.p2.draw(spriteBatch, gameTime);

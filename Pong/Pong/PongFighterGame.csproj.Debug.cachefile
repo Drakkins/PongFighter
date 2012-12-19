@@ -10,7 +10,6 @@ Content\explosion.xnb
 Content\lifebar.xnb
 Content\lifebar2.xnb
 Content\ui_repeat.xnb
-Content\background.xnb
 Content\Xbox A Button.xnb
 Content\Key R.xnb
 Content\speed.xnb
@@ -18,3 +17,6 @@ Content\shield_anim.xnb
 Content\soundExplosion.xnb
 Content\soundGame.xnb
 Content\shield.xnb
+Content\background.xnb
+Content\road.xnb
+Content\tree.xnb
