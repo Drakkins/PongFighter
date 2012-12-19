@@ -28,6 +28,7 @@ namespace Pong
         private Texture2D       life_p2;
         private Texture2D       ui;
         private Texture2D       background;
+        private Texture2D       road;
         private Tank            p1;
         private Tank            p2;
         private SpriteFont      game_font;
@@ -102,7 +103,7 @@ namespace Pong
             this.game_font = Content.Load<SpriteFont>("SquaredDisplay");
             this.ui = Content.Load<Texture2D>("ui_repeat");
             this.background = Content.Load<Texture2D>("background");
-
+            this.road = Content.Load<Texture2D>("road");
             Bonus speed = new Bonus("SPEED", Window.ClientBounds.Width / 2, 0);
             speed.loadContent(Content, "speed");
             listBonus.Add(speed);
@@ -426,6 +427,13 @@ namespace Pong
                     x += this.background.Width;
                 }
                 y += this.background.Height;
+            }
+            y = 50;            
+            while (y < this.height)
+            {
+                this.spriteBatch.Draw(this.road, new Vector2(-2, y), Color.White);
+                this.spriteBatch.Draw(this.road, new Vector2(this.width - this.road.Width + 10, y), Color.White);
+                y += this.road.Height;
             }
         }
 
