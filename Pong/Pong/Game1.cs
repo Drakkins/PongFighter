@@ -79,11 +79,7 @@ namespace Pong
             this.p1.initialize();
             this.p2.initialize();
             this.is_paused = false;
-            explosionSpriteP1 = Content.Load<Texture2D>("explosion");
-            explosionSpriteP2 = Content.Load<Texture2D>("explosion");
-
-            shieldTexture = Content.Load<Texture2D>("shield_anim");
-            exp = Content.Load<SoundEffect>("soundExplosion");
+            
             SoundEffect bgEffect;
             bgEffect = Content.Load<SoundEffect>("soundGame");
             SoundEffectInstance instance = bgEffect.CreateInstance();
@@ -102,6 +98,10 @@ namespace Pong
         protected override void     LoadContent()
         {
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
+            explosionSpriteP1 = Content.Load<Texture2D>("explosion");
+            explosionSpriteP2 = Content.Load<Texture2D>("explosion");
+            shieldTexture = Content.Load<Texture2D>("shield_anim");
+            exp = Content.Load<SoundEffect>("soundExplosion");
             this.p1.loadContent(Content, "green_tank_base");
             this.p2.loadContent(Content, "orange_tank_base");
             this.game_font = Content.Load<SpriteFont>("SquaredDisplay");

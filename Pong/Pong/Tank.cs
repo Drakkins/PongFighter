@@ -14,10 +14,12 @@ namespace Pong
 {
     class                   Tank : Sprite
     {
+        private bool        double_canon = true;
         private int         screen_width;
         private int         screen_height;
         private int         player_number;
         private Texture2D   texture_canon;
+        private Texture2D   texture_double_canon;
         public float        rotation;
         private Vector2     origin;
         private int         y_min = 50;
@@ -65,12 +67,14 @@ namespace Pong
             {
                 this.Position = new Vector2(10, this.screen_height / 2 - this.Texture.Height / 2);
                 this.texture_canon = cm.Load<Texture2D>("green_tank_canon");
+                this.texture_double_canon = cm.Load<Texture2D>("green_tank_double_canon");
                 origin.X = this.texture_canon.Width / 2 - 10;
             }
             else
             {
                 this.Position = new Vector2(this.screen_width - this.Texture.Width - 10, this.screen_height / 2 - this.Texture.Height / 2);
                 this.texture_canon = cm.Load<Texture2D>("orange_tank_canon");
+                this.texture_double_canon = cm.Load<Texture2D>("orange_tank_double_canon");
                 origin.X = this.texture_canon.Width / 2 + 10;
             }
 
@@ -210,7 +214,15 @@ namespace Pong
                 position_canon = new Vector2(Position.X + 20, Position.Y + 30);
             else
                 position_canon = new Vector2(Position.X + 23, Position.Y + 30);
-            sprite_batch.Draw(this.texture_canon, position_canon, null, Color.White, this.rotation, this.origin, 1.0f, SpriteEffects.None, 0f);
+            if (!double_canon)
+                sprite_batch.Draw(this.texture_canon, position_canon, null, Color.White, this.rotation, this.origin, 1.0f, SpriteEffects.None, 0f);
+            else
+                sprite_batch.Draw(this.texture_double_canon, position_canon, null, Color.White, this.rotation, this.origin, 1.0f, SpriteEffects.None, 0f);
+        }
+
+        public void             setDoubleCanon()
+        {
+            this.double_canon = true;
         }
     }
 }
