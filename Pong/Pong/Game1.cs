@@ -412,6 +412,23 @@ namespace Pong
             }
         }
 
+        private void                drawBackground()
+        {
+            int                     x = 0;
+            int                     y = 50;
+
+            while (y < this.height)
+            {
+                x = 0;
+                while (x < this.width)
+                {
+                    this.spriteBatch.Draw(this.background, new Vector2(x, y), Color.White);
+                    x += this.background.Width;
+                }
+                y += this.background.Height;
+            }
+        }
+
         protected override void     Draw(GameTime gameTime)
         {
             if (!this.end)
@@ -428,7 +445,7 @@ namespace Pong
                 p2_score_pos = new Vector2(Window.ClientBounds.Width - 5 - p2_score_size.X, y_score);
                 GraphicsDevice.Clear(Color.WhiteSmoke);
                 spriteBatch.Begin();
-                this.spriteBatch.Draw(this.background, new Vector2(0, 50), Color.White);
+                this.drawBackground();
                 drawBonus(gameTime);
                 this.p1.draw(spriteBatch, gameTime);
                 this.p2.draw(spriteBatch, gameTime);
