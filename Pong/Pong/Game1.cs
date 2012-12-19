@@ -203,6 +203,42 @@ namespace Pong
             }
         }
 
+        private void        addScudP1()
+        {
+            Scud            scud;
+
+            scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p1.Position.X + 50, p1.Position.Y + 26, 0, p1.rotation);
+            scud.initialize();
+            scud.loadContent(Content, "bullet");
+            listScud.Add(scud);
+            fire1 = false;
+            if (this.p1.getDoubleCanon())
+            {
+                scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p1.Position.X + 50, p1.Position.Y + 36, 0, p1.rotation);
+                scud.initialize();
+                scud.loadContent(Content, "bullet");
+                listScud.Add(scud);
+            }
+        }
+
+        private void addScudP2()
+        {
+            Scud scud;
+
+            scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p2.Position.X - 25, p2.Position.Y + 26, 1, p2.rotation);
+            scud.initialize();
+            scud.loadContent(Content, "bullet_orange");
+            listScud.Add(scud);
+            fire2 = false;
+            if (this.p1.getDoubleCanon())
+            {
+                scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p2.Position.X - 25, p2.Position.Y + 36, 1, p2.rotation);
+                scud.initialize();
+                scud.loadContent(Content, "bullet_orange");
+                listScud.Add(scud);
+            }
+        }
+
         private void addScuds(KeyboardState kb_state, GameTime gameTime)
         {
             if (this.is_paused == false)
@@ -217,45 +253,17 @@ namespace Pong
                 if (game_pad_state.IsConnected && fire1 == true)
                 {
                     if (game_pad_state.IsButtonDown(Buttons.LeftTrigger))
-                    {
-                        Scud scud;
-                        scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p1.Position.X + 50, p1.Position.Y + 26, 0, p1.rotation);
-                        scud.initialize();
-                        scud.loadContent(Content, "bullet");
-                        listScud.Add(scud);
-                        fire1 = false;
-                    }
+                        this.addScudP1();
                 }
                 else if ((kb_state.IsKeyDown(Keys.Space)) && fire1 == true)
-                {
-                    Scud scud;
-                    scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p1.Position.X + 50, p1.Position.Y + 26, 0, p1.rotation);
-                    scud.initialize();
-                    scud.loadContent(Content, "bullet");
-                    listScud.Add(scud);
-                    fire1 = false;
-                }
+                    this.addScudP1();
                 if (game_pad_state_2.IsConnected && fire2 == true)
                 {
                     if (game_pad_state_2.IsButtonDown(Buttons.LeftTrigger))
-                    {
-                        Scud scud;
-                        scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p2.Position.X - 25, p2.Position.Y + 26, 1, p2.rotation);
-                        scud.initialize();
-                        scud.loadContent(Content, "bullet_orange");
-                        listScud.Add(scud);
-                        fire2 = false;
-                    }
+                        this.addScudP2();
                 }
                 else if (kb_state.IsKeyDown(Keys.Enter) && fire2 == true)
-                {
-                    Scud scud;
-                    scud = new Scud(Window.ClientBounds.Width, Window.ClientBounds.Height, p2.Position.X - 25, p2.Position.Y + 26, 1, p2.rotation);
-                    scud.initialize();
-                    scud.loadContent(Content, "bullet_orange");
-                    listScud.Add(scud);
-                    fire2 = false;
-                }
+                    this.addScudP2();
                 if (fire1 == false)
                 {
                     time1 += gameTime.ElapsedGameTime.TotalMilliseconds;

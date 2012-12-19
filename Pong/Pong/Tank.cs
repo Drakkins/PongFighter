@@ -224,5 +224,10 @@ namespace Pong
         {
             this.double_canon = true;
         }
+
+        public bool             getDoubleCanon()
+        {
+            return (this.double_canon);
+        }
     }
 }
