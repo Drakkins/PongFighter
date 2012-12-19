@@ -93,13 +93,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="life.png">
-      <Name>life</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="soundGame.wav">
       <Name>soundGame</Name>
       <Importer>WavImporter</Importer>
@@ -164,7 +157,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="shield.jpg">
+    <Compile Include="shield.png">
       <Name>shield</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
